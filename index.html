@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMK NURUL FALAH | SYSTEM V.ULTRA</title>
+    <title>SMK NURUL FALAH</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CONFIG VISUAL (NEON PALETTE) --- */
+        /* --- 1. CONFIG VISUAL --- */
         :root {
-            --neon: #0f0;             /* Hijau Utama */
-            --neon-dim: #004d05;      /* Hijau Gelap */
-            --neon-alert: #ff003c;    /* Merah Error */
-            --bg-color: #000000;      
-            --glass: rgba(0, 10, 0, 0.95); 
-            --font-main: 'Share Tech Mono', monospace;
+            --neon: #0f0;             
+            --neon-dim: #008F11;      
+            --glitch-red: #ff003c;    
+            --glitch-blue: #00f0ff;   
+            --bg-color: #050505;      
+            --glass: rgba(0, 15, 0, 0.92); 
+            --font-main: 'Share Tech Mono', monospace; 
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,381 +33,335 @@
             font-size: 16px;
         }
 
-        /* --- 2. CRT MONITOR EFFECT (VISUAL MEMUKAU) --- */
-        /* Efek garis-garis TV jadul */
-        .crt::before {
-            content: " ";
-            display: block;
-            position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+        /* --- 2. ADVANCED MATRIX BACKGROUND --- */
+        canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.4; }
+        
+        .scanlines { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                        linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+            background-size: 100% 3px, 3px 100%; pointer-events: none; z-index: -1; 
         }
-        /* Efek kedipan layar halus */
-        .crt::after {
-            content: " ";
-            display: block;
-            position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: rgba(18, 16, 16, 0.1);
-            opacity: 0;
-            z-index: 2;
-            pointer-events: none;
-            animation: flicker 0.15s infinite;
-        }
-        @keyframes flicker { 0% { opacity: 0.027; } 5% { opacity: 0.048; } 10% { opacity: 0.021; } 15% { opacity: 0.088; } 20% { opacity: 0.023; } 25% { opacity: 0.098; } 30% { opacity: 0.031; } 35% { opacity: 0.052; } 40% { opacity: 0.038; } 45% { opacity: 0.043; } 50% { opacity: 0.027; } 55% { opacity: 0.048; } 60% { opacity: 0.021; } 65% { opacity: 0.078; } 70% { opacity: 0.033; } 75% { opacity: 0.048; } 80% { opacity: 0.021; } 85% { opacity: 0.078; } 90% { opacity: 0.033; } 95% { opacity: 0.068; } 100% { opacity: 0.031; } }
 
-        /* --- 3. MATRIX BACKGROUND --- */
-        canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.6; }
-
-        /* --- 4. CONTROLS (MUTE BUTTON TOP-LEFT) --- */
-        .control-panel {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            display: none; /* Muncul setelah login */
+        /* --- 3. GLITCH TEXT EFFECT --- */
+        .glitch-wrapper { position: relative; display: inline-block; }
+        .glitch {
+            position: relative; color: var(--neon); font-size: 2rem; 
+            letter-spacing: 3px; font-weight: bold; text-transform: uppercase;
         }
-        .mute-btn {
-            background: rgba(0,0,0,0.7); border: 1px solid var(--neon);
-            color: var(--neon); width: 40px; height: 40px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 1.2rem; border-radius: 4px;
-            box-shadow: 0 0 10px var(--neon-dim); transition: 0.3s;
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
         }
-        .mute-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 20px var(--neon); }
+        .glitch::before {
+            left: 2px; text-shadow: -1px 0 var(--glitch-red); clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px; text-shadow: -1px 0 var(--glitch-blue); clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
 
-        /* --- 5. LOCKSCREEN --- */
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); }
+            20% { clip: rect(80px, 9999px, 100px, 0); transform: skew(0.3deg); }
+            40% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.8deg); }
+            60% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.2deg); }
+            80% { clip: rect(20px, 9999px, 90px, 0); transform: skew(0.6deg); }
+            100% { clip: rect(90px, 9999px, 10px, 0); transform: skew(0.4deg); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(60px, 9999px, 10px, 0); transform: skew(0.8deg); }
+            20% { clip: rect(20px, 9999px, 40px, 0); transform: skew(0.2deg); }
+            40% { clip: rect(90px, 9999px, 30px, 0); transform: skew(0.6deg); }
+            60% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.4deg); }
+            80% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.1deg); }
+            100% { clip: rect(30px, 9999px, 70px, 0); transform: skew(0.7deg); }
+        }
+
+        /* --- 4. LOCKSCREEN --- */
         #overlay {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
+            position: fixed; inset: 0; background: black; z-index: 100;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-out; padding: 20px; text-align: center;
+            transition: opacity 0.5s ease-out; padding: 20px; text-align: center;
         }
-        .lock-box {
-            border: 2px solid var(--neon); padding: 40px; border-radius: 10px;
-            box-shadow: 0 0 30px var(--neon-dim), inset 0 0 20px rgba(0, 255, 0, 0.1);
-            background: rgba(0, 10, 0, 0.9); max-width: 400px; width: 100%;
-        }
-        .lock-icon { font-size: 4rem; margin-bottom: 20px; animation: pulse 1.5s infinite; text-shadow: 0 0 15px var(--neon); }
+        .lock-icon { font-size: 5rem; margin-bottom: 20px; animation: pulse 1.5s infinite; filter: drop-shadow(0 0 10px var(--neon)); }
+        
         .btn-enter {
-            border: 2px solid var(--neon); background: rgba(0, 255, 65, 0.1); color: var(--neon);
-            padding: 15px 30px; font-size: 1.1rem; font-weight: bold; letter-spacing: 2px;
-            cursor: pointer; text-transform: uppercase; margin-top: 25px; font-family: var(--font-main);
-            transition: 0.2s; width: 100%;
+            position: relative; overflow: hidden;
+            border: 2px solid var(--neon); background: rgba(0, 255, 65, 0.05); color: var(--neon);
+            padding: 15px 40px; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px;
+            cursor: pointer; text-transform: uppercase; font-family: var(--font-main);
+            transition: 0.2s; margin-top: 30px;
         }
         .btn-enter:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
-        .btn-enter:active { transform: scale(0.98); }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
 
-        /* --- 6. LAYOUT UTAMA --- */
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* --- 5. LAYOUT --- */
         .container {
             position: relative; z-index: 10;
             max-width: 900px; margin: 0 auto; padding: 20px;
             display: none; padding-bottom: 100px;
         }
-
         header {
-            text-align: center; border: 1px solid var(--neon);
+            text-align: center; border: 1px solid var(--neon-dim);
             padding: 25px; margin-bottom: 25px; background: var(--glass);
-            border-radius: 5px; box-shadow: 0 0 20px var(--neon-dim);
-            position: relative; overflow: hidden;
+            border-radius: 4px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
-        /* Header Decoration */
-        header::before, header::after {
-            content: '+'; position: absolute; top: 10px; color: var(--neon);
-        }
-        header::before { left: 10px; } header::after { right: 10px; }
+        .subtitle { font-size: 1rem; letter-spacing: 3px; border-top: 1px solid var(--neon-dim); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
 
-        /* Glitch Title */
-        .glitch-text {
-            font-size: 2.2rem; font-weight: bold; text-transform: uppercase; position: relative;
-            animation: glitch-skew 2.5s infinite linear alternate-reverse;
-            text-shadow: 2px 2px 0px var(--neon-dim);
-        }
-        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-2deg); } 40% { transform: skew(2deg); } 100% { transform: skew(0deg); } }
-
-        .subtitle { font-size: 0.9rem; font-weight: bold; border-top: 1px dashed var(--neon); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
-
-        /* --- 7. NAVIGASI --- */
+        /* --- 6. NAVIGASI --- */
         nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .nav-btn {
-            background: #000; color: var(--neon); border: 1px solid var(--neon);
-            padding: 12px 20px; cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.9rem;
-            transition: 0.2s; position: relative; overflow: hidden;
+            background: #020202; color: var(--neon); border: 1px solid var(--neon-dim);
+            padding: 12px 18px; cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 1rem;
+            transition: 0.2s; letter-spacing: 1px;
         }
-        .nav-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0,255,0,0.4), transparent);
-            transition: 0.3s;
-        }
-        .nav-btn:hover::before { left: 100%; }
-        .nav-btn.active, .nav-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 25px var(--neon); }
+        .nav-btn:hover { background: rgba(0, 255, 65, 0.15); text-shadow: 0 0 8px var(--neon); }
+        .nav-btn.active { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); border-color: var(--neon); }
 
-        /* --- 8. CONTENT SLIDES --- */
-        .slide {
-            display: none; background: var(--glass); border: 1px solid var(--neon);
-            padding: 30px; border-radius: 0px; animation: slideUp 0.4s ease-out;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); line-height: 1.6; position: relative;
-        }
-        .slide::after {
-            content: "SECURE_DATA"; position: absolute; bottom: 5px; right: 10px;
-            font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
-        }
-        .slide.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-        
-        h2 { 
-            border-left: 5px solid var(--neon); padding-left: 15px;
-            margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        /* --- 9. RUNNING TEXT (MARQUEE) --- */
+        /* --- 7. TEKS BERJALAN --- */
         .marquee-container {
-            border: 1px solid var(--neon); margin-top: 25px; 
-            background: rgba(0, 20, 0, 0.9); overflow: hidden;
-            white-space: nowrap; padding: 12px 0;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon);
+            margin-top: 25px; background: rgba(0, 20, 0, 0.9); overflow: hidden;
+            white-space: nowrap; padding: 10px 0;
         }
         .marquee-content {
             display: inline-block; padding-left: 100%;
-            animation: scroll-text 12s linear infinite;
-            font-size: 1rem; font-weight: bold; letter-spacing: 3px; color: white;
+            animation: scroll-text 15s linear infinite;
+            font-size: 1.1rem; font-weight: bold; letter-spacing: 3px; color: white;
             text-shadow: 0 0 5px var(--neon);
         }
         @keyframes scroll-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* --- 10. GALERI GRID --- */
+        /* --- 8. SLIDES --- */
+        .slide {
+            display: none; background: var(--glass); border: 1px solid var(--neon-dim);
+            padding: 30px; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.05); line-height: 1.6; position: relative;
+        }
+        .slide::before {
+            content: "SYSTEM-RUNNING"; position: absolute; top: 5px; right: 10px;
+            font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
+        }
+        .slide.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        h2 { 
+            border-bottom: 2px solid var(--neon); padding-bottom: 10px; 
+            margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-dim);
+        }
+
+        /* --- 9. GALERI --- */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
         .gallery-item {
             border: 1px solid var(--neon-dim); position: relative; height: 180px; overflow: hidden;
-            transition: 0.3s; background: #000; cursor: pointer;
+            transition: 0.3s; background: #000;
         }
-        .gallery-item:hover { border-color: var(--neon); transform: scale(1.05); z-index: 5; box-shadow: 0 0 25px var(--neon); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; filter: grayscale(100%) sepia(100%) hue-rotate(50deg) saturate(300%); }
-        .gallery-item:hover img { opacity: 1; filter: none; }
+        .gallery-item:hover { border-color: var(--neon); transform: scale(1.02); z-index: 2; box-shadow: 0 0 20px var(--neon-dim); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; filter: grayscale(80%); }
+        .gallery-item:hover img { opacity: 1; filter: grayscale(0%); }
         .caption {
             position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.9);
-            color: var(--neon); font-size: 0.7rem; padding: 5px; text-align: center; border-top: 1px solid var(--neon);
+            color: var(--neon); font-size: 0.7rem; padding: 8px; text-align: center; border-top: 1px solid var(--neon-dim);
+            font-weight: bold; letter-spacing: 1px;
         }
 
-        /* --- 11. KOMPETENSI --- */
+        /* --- 10. KOMPETENSI --- */
         .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .comp-btn {
             padding: 15px; border: 1px solid var(--neon-dim); background: rgba(0,0,0,0.6); 
-            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.85rem;
-            transition: 0.2s; text-align: left; position: relative;
+            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.9rem;
+            transition: 0.2s; text-align: left;
         }
-        .comp-btn:hover { background: rgba(0, 255, 65, 0.1); border-color: var(--neon); padding-left: 20px; }
+        .comp-btn:hover { background: rgba(0, 255, 65, 0.1); border-color: var(--neon); }
         .comp-btn.active-comp { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
-        
         .desc-box { 
             border: 1px dashed var(--neon); padding: 20px; 
             background: rgba(0,10,0,0.8); margin-top: 20px; color: #eee; font-size: 1rem;
-            min-height: 120px; position: relative;
+            min-height: 120px;
         }
-        /* Cursor Blinking di Deskripsi */
-        .desc-box::after { content: '█'; animation: blink 1s infinite; color: var(--neon); margin-left: 5px; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* --- 12. FOOTER --- */
         footer { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--neon-dim); color: #666; font-size: 0.8rem; }
         .author-link { 
             color: var(--neon); text-decoration: none; font-weight: bold; 
             border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; margin-bottom: 10px;
             transition: 0.3s; text-transform: uppercase;
         }
-        .author-link:hover { background: var(--neon); color: black; box-shadow: 0 0 20px var(--neon); }
+        .author-link:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
 
-        /* RESPONSIVE */
-        @media (max-width: 600px) {
-            .glitch-text { font-size: 1.5rem; }
-            .comp-grid { grid-template-columns: 1fr; }
+        /* --- 11. MUSIC CONTROL STYLE (NEW) --- */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--neon);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--neon);
+            display: none; /* Muncul setelah sistem start */
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 10px var(--neon-dim);
+            transition: 0.3s;
+            font-size: 1.2rem;
         }
+        .music-control:hover { box-shadow: 0 0 20px var(--neon); transform: scale(1.1); }
     </style>
 </head>
-<body class="crt">
+<body>
+
+    <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" loop></audio>
 
     <canvas id="matrix-bg"></canvas>
-
-    <audio id="bgm" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="control-panel" id="controls">
-        <div class="mute-btn" onclick="toggleAudio()" title="Mute/Unmute Music">
-            <span id="mute-icon">🔊</span>
-        </div>
-    </div>
+    <div class="scanlines"></div>
 
     <div id="overlay">
-        <div class="lock-box">
-            <div class="lock-icon">🔒</div>
-            <h2 style="margin: 0; color: white; letter-spacing: 2px;">ENCRYPTED SYSTEM</h2>
-            <p style="margin-top: 5px; color: var(--neon); font-size: 0.9rem;">SECURE ACCESS REQUIRED</p>
-            <button class="btn-enter" onclick="System.enter()">BUKA AKSES DATA</button>
-        </div>
+        <div class="lock-icon">🔒</div>
+        <h2 style="margin: 0; color: white; letter-spacing: 4px; font-weight: 400;">ENCRYPTED CONNECTION</h2>
+        <p style="margin-top: 5px; color: var(--neon);">SMK NURUL FALAH - SECURE PORTAL</p>
+        <button class="btn-enter" onclick="System.enter()">BUKA AKSES DATA</button>
+    </div>
+
+    <div id="music-btn" class="music-control" onclick="System.toggleMusic()">
+        <span id="music-icon">🔊</span>
     </div>
 
     <div class="container" id="main-content">
         <header>
-            <div class="glitch-text" data-text="SMK NURUL FALAH">SMK NURUL FALAH</div>
-            <div class="subtitle">XI (BDP) PEMASARAN - TERMINAL V.3.0</div>
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="SMK NURUL FALAH">SMK NURUL FALAH</h1>
+            </div>
+            <div class="subtitle">XI (BDP) PEMASARAN</div>
         </header>
 
         <nav>
-            <button class="nav-btn active" onclick="System.nav('home', this)">BERANDA</button>
-            <button class="nav-btn" onclick="System.nav('visi', this)">VISI & MISI</button>
-            <button class="nav-btn" onclick="System.nav('prodi', this)">MATERI</button>
-            <button class="nav-btn" onclick="System.nav('gallery', this)">GALERI</button>
+            <button class="nav-btn active" onmouseenter="AudioFX.hover()" onclick="System.nav('home', this)">BERANDA</button>
+            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('visi', this)">VISI & MISI</button>
+            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('prodi', this)">MATERI</button>
+            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('gallery', this)">GALERI</button>
         </nav>
 
         <div id="home" class="slide active">
             <h2>PROFIL SEKOLAH</h2>
             <p>
-                Selamat datang di Terminal Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. 
-                Sistem ini memuat database dokumentasi dan portofolio siswa-siswi <strong>SMK Nurul Falah</strong>.
+                Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. 
+                Website ini didedikasikan sebagai media dokumentasi, informasi, dan portofolio digital siswa-siswi <strong>SMK Nurul Falah</strong>.
             </p>
             <br>
-            <p style="border-left: 3px solid var(--neon); padding-left: 10px; color: #ccc;">
-                <strong>LOKASI TARGET:</strong> Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur. 
-                STATUS: ONLINE.
+            <p>
+                SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur</strong>. 
+                Di bawah naungan Yayasan Pendidikan Islam Nurul Falah, kami berkomitmen mencetak generasi muda yang tidak hanya unggul dalam kompetensi kejuruan, 
+                tetapi juga memiliki karakter akhlakul karimah yang kuat serta siap bersaing di dunia industri global.
             </p>
             
             <div class="marquee-container">
                 <div class="marquee-content">
-                    SMK NUFA JAYA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; CONNECTING...
+                    SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA
                 </div>
             </div>
         </div>
 
         <div id="visi" class="slide">
-            <h2>VISI & MISI</h2>
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI UTAMA:</p>
+            <h2>VISI DAN MISI</h2>
+            <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI:</p>
             <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
             
             <hr style="border: 0; border-top: 1px dashed var(--neon); margin: 20px 0;">
             
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">PROTOKOL MISI BDP:</p>
-            <ul style="padding-left: 20px; color: #ddd;">
-                <li style="margin-bottom: 8px;">Integrasi pendidikan vokasi islami & teknologi.</li>
-                <li style="margin-bottom: 8px;">Penguasaan <em>Digital Marketing</em> & <em>E-Commerce</em>.</li>
-                <li>Pencetakan wirausahawan (Entrepreneur) tangguh.</li>
+            <p style="color:white; font-weight:bold; margin-bottom:5px;">MISI PROGRAM KEAHLIAN BDP:</p>
+            <ul style="padding-left: 20px;">
+                <li style="margin-bottom: 10px;">Menyelenggarakan pendidikan vokasi yang terintegrasi dengan nilai-nilai keislaman dan teknologi terkini.</li>
+                <li style="margin-bottom: 10px;">Membekali peserta didik dengan keterampilan <em>Digital Marketing</em> dan <em>E-Commerce</em> yang relevan dengan kebutuhan industri.</li>
+                <li>Membangun jiwa kewirausahaan (Entrepreneurship) agar siswa mampu menciptakan lapangan kerja mandiri.</li>
             </ul>
         </div>
 
         <div id="prodi" class="slide">
-            <h2>DATABASE KOMPETENSI</h2>
+            <h2>KOMPETENSI KEAHLIAN</h2>
             <div class="comp-grid">
-                <button class="comp-btn" onclick="System.detail(this, 'dm')">DIGITAL MARKETING</button>
-                <button class="comp-btn" onclick="System.detail(this, 'rb')">RETAIL BUSINESS</button>
-                <button class="comp-btn" onclick="System.detail(this, 'ps')">PUBLIC SPEAKING</button>
-                <button class="comp-btn" onclick="System.detail(this, 'kwu')">PRODUK KREATIF</button>
+                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'dm')">DIGITAL MARKETING</button>
+                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'rb')">RETAIL BUSINESS</button>
+                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'ps')">PUBLIC SPEAKING</button>
+                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'kwu')">PRODUK KREATIF</button>
             </div>
             <div id="desc-output" class="desc-box">
-                AWAITING INPUT...
+                // SYSTEM_IDLE: MENUNGGU PERINTAH...
             </div>
         </div>
 
         <div id="gallery" class="slide">
             <h2>GALERI KEGIATAN</h2>
             <div class="gallery-grid">
-                <div class="gallery-item" onclick="AudioEngine.playBeep()">
-                    <img src="img/foto1.jpg" alt="1" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                <div class="gallery-item" onclick="AudioFX.click()">
+                    <img src="img/foto1.jpg" alt="1" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
                     <div class="caption">KEGIATAN KELAS XI BDP</div>
                 </div>
-                <div class="gallery-item" onclick="AudioEngine.playBeep()">
-                    <img src="img/foto2.jpg" alt="2" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                <div class="gallery-item" onclick="AudioFX.click()">
+                    <img src="img/foto2.jpg" alt="2" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
                     <div class="caption">PENERIMAAN RAPORT</div>
                 </div>
-                <div class="gallery-item" onclick="AudioEngine.playBeep()">
-                    <img src="img/foto3.jpg" alt="3" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
-                    <div class="caption">KUNJUNGAN INDUSTRI</div>
+                <div class="gallery-item" onclick="AudioFX.click()">
+                    <img src="img/foto3.jpg" alt="3" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
+                    <div class="caption">KUNJUNGAN WISATA</div>
                 </div>
-                <div class="gallery-item" onclick="AudioEngine.playBeep()">
-                    <img src="img/foto4.jpg" alt="4" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                <div class="gallery-item" onclick="AudioFX.click()">
+                    <img src="img/foto4.jpg" alt="4" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
                     <div class="caption">KEGIATAN EKSTRAKURIKULER</div>
                 </div>
             </div>
         </div>
 
         <footer>
-            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioEngine.playBeep()">
-                [ CONTACT AUTHOR: ARLING ]
+            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">
+                 CONTACT AUTHOR: ARLING 
             </a>
-            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH - SECURE VER.</div>
+            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
     </div>
 
     <script>
-        /* --- 1. AUDIO ENGINE (BEEP + BGM) --- */
-        const bgm = document.getElementById('bgm');
-        const muteIcon = document.getElementById('mute-icon');
-        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        const AudioEngine = {
-            playBeep: function(type = 'square') {
-                if(audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                
-                // Konfigurasi Suara Beep yang Tajam
-                osc.type = type; 
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05); // Efek 'chirp'
-                
-                // Volume lebih keras (Gain 0.15)
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
+        class AudioEngine {
+            constructor() {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
             }
-        };
-
-        function toggleAudio() {
-            if(bgm.paused) {
-                bgm.play();
-                muteIcon.innerHTML = "🔊";
-            } else {
-                bgm.pause();
-                muteIcon.innerHTML = "🔇";
+            resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
+            hover() {
+                this.resume();
+                const o = this.ctx.createOscillator();
+                const g = this.ctx.createGain();
+                o.type = 'sine';
+                o.frequency.setValueAtTime(1000, this.ctx.currentTime);
+                o.frequency.exponentialRampToValueAtTime(2000, this.ctx.currentTime + 0.05);
+                g.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+                o.connect(g); g.connect(this.ctx.destination);
+                o.start(); o.stop(this.ctx.currentTime + 0.05);
             }
-            AudioEngine.playBeep();
-        }
-
-        /* --- 2. MATRIX RAIN EFFECT --- */
-        const canvas = document.getElementById("matrix-bg");
-        const ctx = canvas.getContext("2d");
-        let drops = [];
-        
-        function initMatrix() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            drops = Array(Math.ceil(canvas.width / 20)).fill(1);
-        }
-        
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0f0"; // Matrix Green
-            ctx.font = "14px monospace";
-            
-            for (let i = 0; i < drops.length; i++) {
-                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-                ctx.fillText(text, i * 20, drops[i] * 20);
-                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+            click() {
+                this.resume();
+                const o = this.ctx.createOscillator();
+                const g = this.ctx.createGain();
+                o.type = 'square';
+                o.frequency.setValueAtTime(200, this.ctx.currentTime);
+                o.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.1);
+                g.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
+                o.connect(g); g.connect(this.ctx.destination);
+                o.start(); o.stop(this.ctx.currentTime + 0.1);
             }
         }
-        window.addEventListener('resize', initMatrix);
-        initMatrix();
-        setInterval(drawMatrix, 50);
 
-        /* --- 3. SYSTEM LOGIC (TEXT SCRAMBLE + NAV) --- */
         class TextScramble {
             constructor(el) {
                 this.el = el;
-                this.chars = '!<>-_\\/[]{}—=+*^?#________'; 
+                this.chars = '!<>-_\\/[]{}—=+*^?#________';
                 this.update = this.update.bind(this);
             }
             setText(newText) {
@@ -431,13 +386,13 @@
                 let complete = 0;
                 for (let i = 0, n = this.queue.length; i < n; i++) {
                     let { from, to, start, end, char } = this.queue[i];
-                    if (this.frame >= end) { complete++; output += to; }
+                    if (this.frame >= end) { complete++; output += to; } 
                     else if (this.frame >= start) {
                         if (!char || Math.random() < 0.28) {
                             char = this.chars[Math.floor(Math.random() * this.chars.length)];
                             this.queue[i].char = char;
                         }
-                        output += `<span style="color:#0f0">${char}</span>`;
+                        output += `<span style="color:#008F11">${char}</span>`;
                     } else { output += from; }
                 }
                 this.el.innerHTML = output;
@@ -446,9 +401,42 @@
             }
         }
 
+        class MatrixBg {
+            constructor() {
+                this.canvas = document.getElementById("matrix-bg");
+                this.ctx = this.canvas.getContext("2d");
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                setInterval(() => this.draw(), 50);
+            }
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.drops = Array(Math.ceil(this.canvas.width / 20)).fill(1);
+            }
+            draw() {
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; 
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = "#0f0"; 
+                this.ctx.font = "14px monospace";
+                for (let i = 0; i < this.drops.length; i++) {
+                    const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                    this.ctx.fillText(text, i * 20, this.drops[i] * 20);
+                    if (this.drops[i] * 20 > this.canvas.height && Math.random() > 0.975) this.drops[i] = 0;
+                    this.drops[i]++;
+                }
+            }
+        }
+
+        const AudioFX = new AudioEngine();
+        const MatrixFX = new MatrixBg();
         const Scrambler = new TextScramble(document.getElementById('desc-output'));
 
         const System = {
+            bgm: document.getElementById('bgm'),
+            musicBtn: document.getElementById('music-btn'),
+            musicIcon: document.getElementById('music-icon'),
+
             materi: {
                 'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace) untuk menjangkau audiens tertarget, meningkatkan brand awareness, dan mengoptimalkan konversi penjualan secara online.',
                 'rb': 'Pengelolaan manajemen toko ritel modern yang mencakup teknik display produk (Visual Merchandising), manajemen persediaan (Stock Opname), administrasi transaksi (Kasir), serta standar pelayanan prima (Service Excellence).',
@@ -457,13 +445,11 @@
             },
 
             enter: function() {
-                AudioEngine.playBeep();
+                AudioFX.click();
                 
-                // Start BGM (Hanya setelah interaksi user agar tidak diblokir browser)
-                bgm.volume = 0.5;
-                bgm.play().then(() => {
-                    document.getElementById('controls').style.display = 'block';
-                }).catch(e => console.log("Audio autoplay block handled"));
+                // Start BGM
+                this.bgm.play().catch(e => console.log("BGM Play Autoplay prevented."));
+                this.musicBtn.style.display = 'flex';
 
                 document.getElementById('overlay').style.opacity = '0';
                 setTimeout(() => {
@@ -472,8 +458,21 @@
                 }, 500);
             },
 
+            toggleMusic: function() {
+                AudioFX.click();
+                if (this.bgm.paused) {
+                    this.bgm.play();
+                    this.musicIcon.innerText = "🔊";
+                    this.musicBtn.style.opacity = "1";
+                } else {
+                    this.bgm.pause();
+                    this.musicIcon.innerText = "🔇";
+                    this.musicBtn.style.opacity = "0.5";
+                }
+            },
+
             nav: function(id, btn) {
-                AudioEngine.playBeep();
+                AudioFX.click();
                 document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
                 document.getElementById(id).classList.add('active');
@@ -481,7 +480,7 @@
             },
 
             detail: function(btn, key) {
-                AudioEngine.playBeep();
+                AudioFX.click();
                 document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp'));
                 btn.classList.add('active-comp');
                 Scrambler.setText(this.materi[key]);
