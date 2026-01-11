@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SMK NURUL FALAH | SYSTEM V.ULTRA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CONFIG VISUAL (NEON PALETTE) --- */
+        :root {
+            --neon: #0f0;             /* Hijau Utama */
+            --neon-dim: #004d05;      /* Hijau Gelap */
+            --neon-alert: #ff003c;    /* Merah Error */
+            --bg-color: #000000;      
+            --glass: rgba(0, 10, 0, 0.95); 
+            --font-main: 'Share Tech Mono', monospace;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--neon);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        /* --- 2. CRT MONITOR EFFECT (VISUAL MEMUKAU) --- */
+        /* Efek garis-garis TV jadul */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        /* Efek kedipan layar halus */
+        .crt::after {
+            content: " ";
+            display: block;
+            position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker { 0% { opacity: 0.027; } 5% { opacity: 0.048; } 10% { opacity: 0.021; } 15% { opacity: 0.088; } 20% { opacity: 0.023; } 25% { opacity: 0.098; } 30% { opacity: 0.031; } 35% { opacity: 0.052; } 40% { opacity: 0.038; } 45% { opacity: 0.043; } 50% { opacity: 0.027; } 55% { opacity: 0.048; } 60% { opacity: 0.021; } 65% { opacity: 0.078; } 70% { opacity: 0.033; } 75% { opacity: 0.048; } 80% { opacity: 0.021; } 85% { opacity: 0.078; } 90% { opacity: 0.033; } 95% { opacity: 0.068; } 100% { opacity: 0.031; } }
+
+        /* --- 3. MATRIX BACKGROUND --- */
+        canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.6; }
+
+        /* --- 4. CONTROLS (MUTE BUTTON TOP-LEFT) --- */
+        .control-panel {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            display: none; /* Muncul setelah login */
+        }
+        .mute-btn {
+            background: rgba(0,0,0,0.7); border: 1px solid var(--neon);
+            color: var(--neon); width: 40px; height: 40px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 1.2rem; border-radius: 4px;
+            box-shadow: 0 0 10px var(--neon-dim); transition: 0.3s;
+        }
+        .mute-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 20px var(--neon); }
+
+        /* --- 5. LOCKSCREEN --- */
+        #overlay {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out; padding: 20px; text-align: center;
+        }
+        .lock-box {
+            border: 2px solid var(--neon); padding: 40px; border-radius: 10px;
+            box-shadow: 0 0 30px var(--neon-dim), inset 0 0 20px rgba(0, 255, 0, 0.1);
+            background: rgba(0, 10, 0, 0.9); max-width: 400px; width: 100%;
+        }
+        .lock-icon { font-size: 4rem; margin-bottom: 20px; animation: pulse 1.5s infinite; text-shadow: 0 0 15px var(--neon); }
+        .btn-enter {
+            border: 2px solid var(--neon); background: rgba(0, 255, 65, 0.1); color: var(--neon);
+            padding: 15px 30px; font-size: 1.1rem; font-weight: bold; letter-spacing: 2px;
+            cursor: pointer; text-transform: uppercase; margin-top: 25px; font-family: var(--font-main);
+            transition: 0.2s; width: 100%;
+        }
+        .btn-enter:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
+        .btn-enter:active { transform: scale(0.98); }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+
+        /* --- 6. LAYOUT UTAMA --- */
+        .container {
+            position: relative; z-index: 10;
+            max-width: 900px; margin: 0 auto; padding: 20px;
+            display: none; padding-bottom: 100px;
+        }
+
+        header {
+            text-align: center; border: 1px solid var(--neon);
+            padding: 25px; margin-bottom: 25px; background: var(--glass);
+            border-radius: 5px; box-shadow: 0 0 20px var(--neon-dim);
+            position: relative; overflow: hidden;
+        }
+        /* Header Decoration */
+        header::before, header::after {
+            content: '+'; position: absolute; top: 10px; color: var(--neon);
+        }
+        header::before { left: 10px; } header::after { right: 10px; }
+
+        /* Glitch Title */
+        .glitch-text {
+            font-size: 2.2rem; font-weight: bold; text-transform: uppercase; position: relative;
+            animation: glitch-skew 2.5s infinite linear alternate-reverse;
+            text-shadow: 2px 2px 0px var(--neon-dim);
+        }
+        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-2deg); } 40% { transform: skew(2deg); } 100% { transform: skew(0deg); } }
+
+        .subtitle { font-size: 0.9rem; font-weight: bold; border-top: 1px dashed var(--neon); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
+
+        /* --- 7. NAVIGASI --- */
+        nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .nav-btn {
+            background: #000; color: var(--neon); border: 1px solid var(--neon);
+            padding: 12px 20px; cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.9rem;
+            transition: 0.2s; position: relative; overflow: hidden;
+        }
+        .nav-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,0,0.4), transparent);
+            transition: 0.3s;
+        }
+        .nav-btn:hover::before { left: 100%; }
+        .nav-btn.active, .nav-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 25px var(--neon); }
+
+        /* --- 8. CONTENT SLIDES --- */
+        .slide {
+            display: none; background: var(--glass); border: 1px solid var(--neon);
+            padding: 30px; border-radius: 0px; animation: slideUp 0.4s ease-out;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); line-height: 1.6; position: relative;
+        }
+        .slide::after {
+            content: "SECURE_DATA"; position: absolute; bottom: 5px; right: 10px;
+            font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
+        }
+        .slide.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        
+        h2 { 
+            border-left: 5px solid var(--neon); padding-left: 15px;
+            margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* --- 9. RUNNING TEXT (MARQUEE) --- */
+        .marquee-container {
+            border: 1px solid var(--neon); margin-top: 25px; 
+            background: rgba(0, 20, 0, 0.9); overflow: hidden;
+            white-space: nowrap; padding: 12px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .marquee-content {
+            display: inline-block; padding-left: 100%;
+            animation: scroll-text 12s linear infinite;
+            font-size: 1rem; font-weight: bold; letter-spacing: 3px; color: white;
+            text-shadow: 0 0 5px var(--neon);
+        }
+        @keyframes scroll-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- 10. GALERI GRID --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
+        .gallery-item {
+            border: 1px solid var(--neon-dim); position: relative; height: 180px; overflow: hidden;
+            transition: 0.3s; background: #000; cursor: pointer;
+        }
+        .gallery-item:hover { border-color: var(--neon); transform: scale(1.05); z-index: 5; box-shadow: 0 0 25px var(--neon); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; filter: grayscale(100%) sepia(100%) hue-rotate(50deg) saturate(300%); }
+        .gallery-item:hover img { opacity: 1; filter: none; }
+        .caption {
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.9);
+            color: var(--neon); font-size: 0.7rem; padding: 5px; text-align: center; border-top: 1px solid var(--neon);
+        }
+
+        /* --- 11. KOMPETENSI --- */
+        .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .comp-btn {
+            padding: 15px; border: 1px solid var(--neon-dim); background: rgba(0,0,0,0.6); 
+            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.85rem;
+            transition: 0.2s; text-align: left; position: relative;
+        }
+        .comp-btn:hover { background: rgba(0, 255, 65, 0.1); border-color: var(--neon); padding-left: 20px; }
+        .comp-btn.active-comp { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
+        
+        .desc-box { 
+            border: 1px dashed var(--neon); padding: 20px; 
+            background: rgba(0,10,0,0.8); margin-top: 20px; color: #eee; font-size: 1rem;
+            min-height: 120px; position: relative;
+        }
+        /* Cursor Blinking di Deskripsi */
+        .desc-box::after { content: '█'; animation: blink 1s infinite; color: var(--neon); margin-left: 5px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* --- 12. FOOTER --- */
+        footer { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--neon-dim); color: #666; font-size: 0.8rem; }
+        .author-link { 
+            color: var(--neon); text-decoration: none; font-weight: bold; 
+            border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; margin-bottom: 10px;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .author-link:hover { background: var(--neon); color: black; box-shadow: 0 0 20px var(--neon); }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .glitch-text { font-size: 1.5rem; }
+            .comp-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="crt">
+
+    <canvas id="matrix-bg"></canvas>
+
+    <audio id="bgm" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="control-panel" id="controls">
+        <div class="mute-btn" onclick="toggleAudio()" title="Mute/Unmute Music">
+            <span id="mute-icon">🔊</span>
+        </div>
+    </div>
+
+    <div id="overlay">
+        <div class="lock-box">
+            <div class="lock-icon">🔒</div>
+            <h2 style="margin: 0; color: white; letter-spacing: 2px;">ENCRYPTED SYSTEM</h2>
+            <p style="margin-top: 5px; color: var(--neon); font-size: 0.9rem;">SECURE ACCESS REQUIRED</p>
+            <button class="btn-enter" onclick="System.enter()">BUKA AKSES DATA</button>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
+        <header>
+            <div class="glitch-text" data-text="SMK NURUL FALAH">SMK NURUL FALAH</div>
+            <div class="subtitle">XI (BDP) PEMASARAN - TERMINAL V.3.0</div>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="System.nav('home', this)">BERANDA</button>
+            <button class="nav-btn" onclick="System.nav('visi', this)">VISI & MISI</button>
+            <button class="nav-btn" onclick="System.nav('prodi', this)">MATERI</button>
+            <button class="nav-btn" onclick="System.nav('gallery', this)">GALERI</button>
+        </nav>
+
+        <div id="home" class="slide active">
+            <h2>PROFIL SEKOLAH</h2>
+            <p>
+                Selamat datang di Terminal Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. 
+                Sistem ini memuat database dokumentasi dan portofolio siswa-siswi <strong>SMK Nurul Falah</strong>.
+            </p>
+            <br>
+            <p style="border-left: 3px solid var(--neon); padding-left: 10px; color: #ccc;">
+                <strong>LOKASI TARGET:</strong> Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur. 
+                STATUS: ONLINE.
+            </p>
+            
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    SMK NUFA JAYA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; CONNECTING...
+                </div>
+            </div>
+        </div>
+
+        <div id="visi" class="slide">
+            <h2>VISI & MISI</h2>
+            <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI UTAMA:</p>
+            <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
+            
+            <hr style="border: 0; border-top: 1px dashed var(--neon); margin: 20px 0;">
+            
+            <p style="color:white; font-weight:bold; margin-bottom:5px;">PROTOKOL MISI BDP:</p>
+            <ul style="padding-left: 20px; color: #ddd;">
+                <li style="margin-bottom: 8px;">Integrasi pendidikan vokasi islami & teknologi.</li>
+                <li style="margin-bottom: 8px;">Penguasaan <em>Digital Marketing</em> & <em>E-Commerce</em>.</li>
+                <li>Pencetakan wirausahawan (Entrepreneur) tangguh.</li>
+            </ul>
+        </div>
+
+        <div id="prodi" class="slide">
+            <h2>DATABASE KOMPETENSI</h2>
+            <div class="comp-grid">
+                <button class="comp-btn" onclick="System.detail(this, 'dm')">DIGITAL MARKETING</button>
+                <button class="comp-btn" onclick="System.detail(this, 'rb')">RETAIL BUSINESS</button>
+                <button class="comp-btn" onclick="System.detail(this, 'ps')">PUBLIC SPEAKING</button>
+                <button class="comp-btn" onclick="System.detail(this, 'kwu')">PRODUK KREATIF</button>
+            </div>
+            <div id="desc-output" class="desc-box">
+                AWAITING INPUT...
+            </div>
+        </div>
+
+        <div id="gallery" class="slide">
+            <h2>GALERI KEGIATAN</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="AudioEngine.playBeep()">
+                    <img src="img/foto1.jpg" alt="1" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                    <div class="caption">KEGIATAN KELAS XI BDP</div>
+                </div>
+                <div class="gallery-item" onclick="AudioEngine.playBeep()">
+                    <img src="img/foto2.jpg" alt="2" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                    <div class="caption">PENERIMAAN RAPORT</div>
+                </div>
+                <div class="gallery-item" onclick="AudioEngine.playBeep()">
+                    <img src="img/foto3.jpg" alt="3" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                    <div class="caption">KUNJUNGAN INDUSTRI</div>
+                </div>
+                <div class="gallery-item" onclick="AudioEngine.playBeep()">
+                    <img src="img/foto4.jpg" alt="4" onerror="this.src='https://via.placeholder.com/300x200/000/0f0?text=NO+SIGNAL'">
+                    <div class="caption">KEGIATAN EKSTRAKURIKULER</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioEngine.playBeep()">
+                [ CONTACT AUTHOR: ARLING ]
+            </a>
+            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH - SECURE VER.</div>
+        </footer>
+    </div>
+
+    <script>
+        /* --- 1. AUDIO ENGINE (BEEP + BGM) --- */
+        const bgm = document.getElementById('bgm');
+        const muteIcon = document.getElementById('mute-icon');
+        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        const AudioEngine = {
+            playBeep: function(type = 'square') {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                // Konfigurasi Suara Beep yang Tajam
+                osc.type = type; 
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05); // Efek 'chirp'
+                
+                // Volume lebih keras (Gain 0.15)
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            }
+        };
+
+        function toggleAudio() {
+            if(bgm.paused) {
+                bgm.play();
+                muteIcon.innerHTML = "🔊";
+            } else {
+                bgm.pause();
+                muteIcon.innerHTML = "🔇";
+            }
+            AudioEngine.playBeep();
+        }
+
+        /* --- 2. MATRIX RAIN EFFECT --- */
+        const canvas = document.getElementById("matrix-bg");
+        const ctx = canvas.getContext("2d");
+        let drops = [];
+        
+        function initMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drops = Array(Math.ceil(canvas.width / 20)).fill(1);
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f0"; // Matrix Green
+            ctx.font = "14px monospace";
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctx.fillText(text, i * 20, drops[i] * 20);
+                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        window.addEventListener('resize', initMatrix);
+        initMatrix();
+        setInterval(drawMatrix, 50);
+
+        /* --- 3. SYSTEM LOGIC (TEXT SCRAMBLE + NAV) --- */
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#________'; 
+                this.update = this.update.bind(this);
+            }
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise((resolve) => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            update() {
+                let output = '';
+                let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) { complete++; output += to; }
+                    else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.queue[i].char = char;
+                        }
+                        output += `<span style="color:#0f0">${char}</span>`;
+                    } else { output += from; }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) { this.resolve(); } 
+                else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+            }
+        }
+
+        const Scrambler = new TextScramble(document.getElementById('desc-output'));
+
+        const System = {
+            materi: {
+                'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace) untuk menjangkau audiens tertarget, meningkatkan brand awareness, dan mengoptimalkan konversi penjualan secara online.',
+                'rb': 'Pengelolaan manajemen toko ritel modern yang mencakup teknik display produk (Visual Merchandising), manajemen persediaan (Stock Opname), administrasi transaksi (Kasir), serta standar pelayanan prima (Service Excellence).',
+                'ps': 'Pengembangan soft-skill komunikasi bisnis untuk keperluan presentasi produk, negosiasi dengan klien, serta kemampuan Public Speaking yang persuasif dan percaya diri di hadapan audiens profesional.',
+                'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
+            },
+
+            enter: function() {
+                AudioEngine.playBeep();
+                
+                // Start BGM (Hanya setelah interaksi user agar tidak diblokir browser)
+                bgm.volume = 0.5;
+                bgm.play().then(() => {
+                    document.getElementById('controls').style.display = 'block';
+                }).catch(e => console.log("Audio autoplay block handled"));
+
+                document.getElementById('overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('overlay').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                }, 500);
+            },
+
+            nav: function(id, btn) {
+                AudioEngine.playBeep();
+                document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                btn.classList.add('active');
+            },
+
+            detail: function(btn, key) {
+                AudioEngine.playBeep();
+                document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp'));
+                btn.classList.add('active-comp');
+                Scrambler.setText(this.materi[key]);
+            }
+        };
+    </script>
+</body>
+</html>
