@@ -46,19 +46,4 @@ Project ini bukan sekadar HTML biasa, tetapi dilengkapi dengan **Advanced JavaSc
 * **Google Fonts** - Font `Share Tech Mono` untuk nuansa coding.
 
 ---
-
-## 📂 Struktur Folder
-
-Pastikan struktur file di komputer/repository kamu seperti ini:
-
-```text
-/ (Root Directory)
-│
-├── index.html       # File kode utama (Ultimate Version)
-├── README.md        # File dokumentasi ini
-└── img/             # Folder gambar
-    ├── foto1.jpg    # Foto Kegiatan 1
-    ├── foto2.jpg    # Foto Kegiatan 2
-    ├── foto3.jpg    # Foto Kegiatan 3
-    └── foto4.jpg    # Foto Kegiatan 4
     
