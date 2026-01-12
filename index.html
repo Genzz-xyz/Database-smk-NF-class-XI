@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMK NURUL FALAH | SECURE SYSTEM</title>
+    <title>SMK NURUL FALAH | SYSTEM V.FINAL</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,24 +58,16 @@
             animation: glitch-anim-2 3s infinite linear alternate-reverse;
         }
         .glitch::after {
-            left: -2px; text-shadow: -1px 0 var(--glitch-blue); clip: rect(85px, 550px, 140px, 0);
+            left: -2px; text-shadow: -1px 0 var(--glitch-blue); clip: rect(85px, 140px, 140px, 0);
             animation: glitch-anim 2.5s infinite linear alternate-reverse;
         }
 
         @keyframes glitch-anim {
             0% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); }
-            20% { clip: rect(80px, 9999px, 100px, 0); transform: skew(0.3deg); }
-            40% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.8deg); }
-            60% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.2deg); }
-            80% { clip: rect(20px, 9999px, 90px, 0); transform: skew(0.6deg); }
             100% { clip: rect(90px, 9999px, 10px, 0); transform: skew(0.4deg); }
         }
         @keyframes glitch-anim-2 {
             0% { clip: rect(60px, 9999px, 10px, 0); transform: skew(0.8deg); }
-            20% { clip: rect(20px, 9999px, 40px, 0); transform: skew(0.2deg); }
-            40% { clip: rect(90px, 9999px, 30px, 0); transform: skew(0.6deg); }
-            60% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.4deg); }
-            80% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.1deg); }
             100% { clip: rect(30px, 9999px, 70px, 0); transform: skew(0.7deg); }
         }
 
@@ -95,7 +87,6 @@
             transition: 0.2s; margin-top: 30px;
         }
         .btn-enter:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
-
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
         /* --- 5. LAYOUT --- */
@@ -109,6 +100,7 @@
             padding: 25px; margin-bottom: 25px; background: var(--glass);
             border-radius: 4px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
+        /* Subtitle Statis sesuai arahan */
         .subtitle { font-size: 1rem; letter-spacing: 3px; border-top: 1px solid var(--neon-dim); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
 
         /* --- 6. NAVIGASI --- */
@@ -131,81 +123,62 @@
             display: inline-block; padding-left: 100%;
             animation: scroll-text 15s linear infinite;
             font-size: 1.1rem; font-weight: bold; letter-spacing: 3px; color: white;
-            text-shadow: 0 0 5px var(--neon);
         }
         @keyframes scroll-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- 8. SLIDES & HUD --- */
         .slide {
             display: none; background: var(--glass); border: 1px solid var(--neon-dim);
-            padding: 30px; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px; animation: slideUp 0.4s ease-out;
             box-shadow: 0 0 10px rgba(0, 255, 65, 0.05); line-height: 1.6; position: relative;
         }
-        
         .slide-hud {
             position: absolute; top: 5px; right: 10px;
             font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
         }
-
         .slide.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        h2 { 
-            border-bottom: 2px solid var(--neon); padding-bottom: 10px; 
-            margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px;
-            text-shadow: 0 0 10px var(--neon-dim);
-        }
+        h2 { border-bottom: 2px solid var(--neon); padding-bottom: 10px; margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px; }
 
         /* --- 9. GALERI AUTOMATIC SPACING --- */
         .gallery-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-            gap: 20px; 
-            padding: 10px;
-            margin-top: 20px; 
+            gap: 20px; padding: 10px; margin-top: 20px; 
         }
         .gallery-item {
             border: 1px solid var(--neon-dim); position: relative; 
             aspect-ratio: 1/1; overflow: hidden;
             transition: 0.3s; background: #000; border-radius: 4px;
         }
-        .gallery-item:hover { border-color: var(--neon); transform: scale(1.02); box-shadow: 0 0 15px var(--neon-dim); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.3s; }
-        .gallery-item:hover img { opacity: 1; }
+        .gallery-item:hover img { opacity: 1; transform: scale(1.05); }
         .caption {
             position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.85);
             color: var(--neon); font-size: 0.65rem; padding: 6px; text-align: center; border-top: 1px solid var(--neon-dim);
-            font-weight: bold; letter-spacing: 1px;
+            font-weight: bold;
         }
 
         /* --- 10. KOMPETENSI --- */
         .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .comp-btn {
             padding: 15px; border: 1px solid var(--neon-dim); background: rgba(0,0,0,0.6); 
-            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.9rem;
+            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold;
             transition: 0.2s; text-align: left;
         }
-        .comp-btn:hover { background: rgba(0, 255, 65, 0.1); border-color: var(--neon); }
         .comp-btn.active-comp { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
-        .desc-box { 
-            border: 1px dashed var(--neon); padding: 20px; 
-            background: rgba(0,10,0,0.8); margin-top: 20px; color: #eee; font-size: 1rem;
-            min-height: 120px;
-        }
+        .desc-box { border: 1px dashed var(--neon); padding: 20px; background: rgba(0,10,0,0.8); margin-top: 20px; min-height: 120px; }
 
         footer { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--neon-dim); color: #666; font-size: 0.8rem; }
-        .author-link { 
-            color: var(--neon); text-decoration: none; font-weight: bold; 
-            border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; margin-bottom: 10px;
-            transition: 0.3s; text-transform: uppercase;
-        }
+        .author-link { color: var(--neon); text-decoration: none; font-weight: bold; border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; }
 
-        /* --- 11. MUSIC CONTROL STYLE --- */
+        /* --- 11. MUSIC CONTROL --- */
         .music-control {
             position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
             border: 1px solid var(--neon); background: rgba(0, 0, 0, 0.8); color: var(--neon);
             display: none; justify-content: center; align-items: center; border-radius: 50%;
-            cursor: pointer; z-index: 1000; box-shadow: 0 0 10px var(--neon-dim);
+            cursor: pointer; z-index: 1000;
         }
     </style>
 </head>
@@ -245,24 +218,24 @@
         <div id="home" class="slide active">
             <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>PROFIL SEKOLAH</h2>
-            <p>Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. Website ini didedikasikan sebagai media dokumentasi siswa-siswi <strong>SMK Nurul Falah</strong>.</p>
+            <p>Selamat datang di Sistem Digital <strong>Kelas XI BDP</strong>. Website ini adalah media dokumentasi siswa-siswi <strong>SMK Nurul Falah</strong>.</p>
             <br>
-            <p>SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur</strong>. Di bawah naungan Yayasan Pendidikan Islam Nurul Falah.</p>
+            <p>Berlokasi di <strong>Desa Gedung Wani Timur, Lampung Timur</strong>. Kami mencetak lulusan kompeten berkarakter akhlakul karimah.</p>
             <div class="marquee-container">
-                <div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA</div>
+                <div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SMK NUFA JAYA</div>
             </div>
         </div>
 
         <div id="visi" class="slide">
             <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>VISI DAN MISI</h2>
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI:</p>
-            <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
+            <p style="font-weight:bold;">VISI:</p>
+            <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Kompeten, Mandiri, dan Berwawasan Global."</p>
             <hr style="border: 0; border-top: 1px dashed var(--neon); margin: 20px 0;">
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">MISI PROGRAM KEAHLIAN BDP:</p>
+            <p style="font-weight:bold;">MISI BDP:</p>
             <ul style="padding-left: 20px;">
-                <li>Pendidikan vokasi terintegrasi nilai keislaman.</li>
-                <li>Keterampilan Digital Marketing & E-Commerce.</li>
+                <li>Pendidikan vokasi berbasis nilai keislaman.</li>
+                <li>Keterampilan Digital Marketing modern.</li>
                 <li>Jiwa Kewirausahaan (Entrepreneurship).</li>
             </ul>
         </div>
@@ -286,7 +259,7 @@
         </div>
 
         <footer>
-            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR : ARLING</a>
+            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR</a>
             <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
     </div>
@@ -359,7 +332,7 @@
                     } else { output += from; }
                 }
                 this.el.innerHTML = output;
-                if (complete === this.queue.length) { this.resolve(); } 
+                if (complete === this.queue.length) this.resolve(); 
                 else { this.frameRequest = requestAnimationFrame(() => this.update()); this.frame++; }
             }
         }
@@ -372,22 +345,22 @@
             musicBtn: document.getElementById('music-btn'),
             // EDIT CAPTION SATU-SATU DI SINI
             daftarFoto: [
-                { id: 1, caption: "KEGIATAN KELAS XI BDP" },
+                { id: 1, caption: "SUASANA KELAS XI BDP" },
                 { id: 2, caption: "PENERIMAAN RAPORT" },
                 { id: 3, caption: "KUNJUNGAN WISATA" },
-                { id: 4, caption: "EKSTRAKURIKULER" }
+                { id: 4, caption: "LATIHAN EKSTRAKURIKULER" }
             ],
 
             materi: {
-                'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace).',
-                'rb': 'Pengelolaan manajemen toko ritel modern mencakup teknik display produk dan administrasi transaksi.',
-                'ps': 'Pengembangan soft-skill komunikasi bisnis untuk negosiasi klien dan presentasi produk persuasif.',
-                'kwu': 'Implementasi PKK dimana siswa dibimbing merancang, memproduksi, dan memasarkan produk inovatif.'
+                'dm': 'Strategi pemasaran digital via Facebook Ads, Instagram, dan TikTok.',
+                'rb': 'Manajemen toko ritel modern mencakup visual merchandising dan administrasi kasir.',
+                'ps': 'Kemampuan Public Speaking persuasif untuk negosiasi bisnis profesional.',
+                'kwu': 'Merancang dan memasarkan produk kreatif siswa secara mandiri.'
             },
 
             enter: function() {
                 AudioFX.click();
-                this.bgm.volume = 0.6; // BGM 0.6
+                this.bgm.volume = 0.6; // Volume Musik 0.6
                 this.bgm.play().catch(() => {});
                 this.musicBtn.style.display = 'flex';
                 this.renderGallery();
@@ -403,8 +376,9 @@
                     const div = document.createElement('div');
                     div.className = 'gallery-item';
                     div.onclick = () => AudioFX.click();
+                    // SEKARANG LANGSUNG src="foto..." TANPA img/
                     div.innerHTML = `
-                        <img src="img/foto${item.id}.jpg" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=DATA_V.${item.id}'">
+                        <img src="foto${item.id}.jpg" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=DATA_V.${item.id}'">
                         <div class="caption">${item.caption}</div>
                     `;
                     container.appendChild(div);
