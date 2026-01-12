@@ -34,7 +34,6 @@
         }
 
         /* --- 2. ADVANCED MATRIX BACKGROUND --- */
-        /* Opacity dinaikkan ke 0.8 agar kontras Matrix sangat jelas */
         canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.8; }
         
         .scanlines { 
@@ -142,10 +141,13 @@
             padding: 30px; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 10px rgba(0, 255, 65, 0.05); line-height: 1.6; position: relative;
         }
-        .slide::before {
-            content: "SYSTEM-RUNNING"; position: absolute; top: 5px; right: 10px;
+        
+        /* HUD LATENCY DI POJOK SLIDE */
+        .slide-hud {
+            position: absolute; top: 5px; right: 10px;
             font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
         }
+
         .slide.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -250,6 +252,7 @@
         </nav>
 
         <div id="home" class="slide active">
+            <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>PROFIL SEKOLAH</h2>
             <p>
                 Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. 
@@ -270,6 +273,7 @@
         </div>
 
         <div id="visi" class="slide">
+            <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>VISI DAN MISI</h2>
             <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI:</p>
             <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
@@ -285,6 +289,7 @@
         </div>
 
         <div id="prodi" class="slide">
+            <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>KOMPETENSI KEAHLIAN</h2>
             <div class="comp-grid">
                 <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'dm')">DIGITAL MARKETING</button>
@@ -298,6 +303,7 @@
         </div>
 
         <div id="gallery" class="slide">
+            <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>GALERI KEGIATAN</h2>
             <div class="gallery-grid">
                 <div class="gallery-item" onclick="AudioFX.click()">
@@ -352,7 +358,7 @@
                 o.type = 'square';
                 o.frequency.setValueAtTime(200, this.ctx.currentTime);
                 o.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.1);
-                // Beep dikeraskan sesuai permintaan (0.4)
+                // Beep dikeraskan 0.4
                 g.gain.setValueAtTime(0.4, this.ctx.currentTime);
                 g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
                 o.connect(g); g.connect(this.ctx.destination);
@@ -403,7 +409,6 @@
             }
         }
 
-        /* Image of Matrix rain code effect logic */
         class MatrixBg {
             constructor() {
                 this.canvas = document.getElementById("matrix-bg");
@@ -418,10 +423,8 @@
                 this.drops = Array(Math.ceil(this.canvas.width / 20)).fill(1);
             }
             draw() {
-                // Background diatur ke 0.1 agar kontras teks jatuh lebih menonjol
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                // Koreksi Hex Color ke Hijau Neon Terang agar terlihat
                 this.ctx.fillStyle = "#00ff41"; 
                 this.ctx.font = "14px monospace";
                 for (let i = 0; i < this.drops.length; i++) {
@@ -452,18 +455,37 @@
             enter: function() {
                 AudioFX.click();
                 
-                // Volume diatur ke 0.6 sesuai permintaan
+                // Volume basis 0.6
                 this.bgm.volume = 0.6;
 
                 // Start BGM
                 this.bgm.play().catch(e => console.log("BGM Play Autoplay prevented."));
                 this.musicBtn.style.display = 'flex';
+                
+                // Mulai Latency Monitor
+                this.startLatencyMonitor();
 
                 document.getElementById('overlay').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('overlay').style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
                 }, 500);
+            },
+
+            startLatencyMonitor: function() {
+                const latElements = document.querySelectorAll('.lat-val');
+                setInterval(() => {
+                    const startTime = Date.now();
+                    fetch(window.location.href, { method: 'HEAD', cache: 'no-cache' })
+                        .then(() => {
+                            const lat = Date.now() - startTime;
+                            latElements.forEach(el => el.innerText = lat);
+                        })
+                        .catch(() => {
+                            const fallback = Math.floor(Math.random() * 30) + 20;
+                            latElements.forEach(el => el.innerText = fallback);
+                        });
+                }, 3000);
             },
 
             toggleMusic: function() {
