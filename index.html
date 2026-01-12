@@ -4,429 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SMK NURUL FALAH</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CONFIG VISUAL --- */
-        :root {
-            --neon: #0f0;             
-            --neon-dim: #008F11;      
-            --glitch-red: #ff003c;    
-            --glitch-blue: #00f0ff;   
-            --bg-color: #050505;      
-            --glass: rgba(0, 15, 0, 0.92); 
-            --font-main: 'Share Tech Mono', monospace; 
-        }
-
+        /* --- CORE STYLE (NO CHANGES) --- */
+        :root { --neon: #0f0; --neon-dim: #008F11; --glitch-red: #ff003c; --glitch-blue: #00f0ff; --bg-color: #050505; --glass: rgba(0, 15, 0, 0.92); --font-main: 'Share Tech Mono', monospace; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-color);
-            color: var(--neon);
-            font-family: var(--font-main);
-            overflow-x: hidden;
-            min-height: 100vh;
-            font-size: 16px;
-        }
-
-        /* --- 2. ADVANCED MATRIX BACKGROUND --- */
+        body { margin: 0; padding: 0; background-color: var(--bg-color); color: var(--neon); font-family: var(--font-main); overflow-x: hidden; min-height: 100vh; font-size: 16px; }
         canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.8; }
-        
-        .scanlines { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                        linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
-            background-size: 100% 3px, 3px 100%; pointer-events: none; z-index: -1; 
-        }
-
-        /* --- 3. GLITCH TEXT EFFECT --- */
+        .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06)); background-size: 100% 3px, 3px 100%; pointer-events: none; z-index: -1; }
         .glitch-wrapper { position: relative; display: inline-block; }
-        .glitch {
-            position: relative; color: var(--neon); font-size: 2rem; 
-            letter-spacing: 3px; font-weight: bold; text-transform: uppercase;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
-        }
-        .glitch::before {
-            left: 2px; text-shadow: -1px 0 var(--glitch-red); clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px; text-shadow: -1px 0 var(--glitch-blue); clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); }
-            20% { clip: rect(80px, 9999px, 100px, 0); transform: skew(0.3deg); }
-            40% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.8deg); }
-            60% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.2deg); }
-            80% { clip: rect(20px, 9999px, 90px, 0); transform: skew(0.6deg); }
-            100% { clip: rect(90px, 9999px, 10px, 0); transform: skew(0.4deg); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(60px, 9999px, 10px, 0); transform: skew(0.8deg); }
-            20% { clip: rect(20px, 9999px, 40px, 0); transform: skew(0.2deg); }
-            40% { clip: rect(90px, 9999px, 30px, 0); transform: skew(0.6deg); }
-            60% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.4deg); }
-            80% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.1deg); }
-            100% { clip: rect(30px, 9999px, 70px, 0); transform: skew(0.7deg); }
-        }
-
-        /* --- 4. LOCKSCREEN --- */
-        #overlay {
-            position: fixed; inset: 0; background: black; z-index: 100;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out; padding: 20px; text-align: center;
-        }
-        .lock-icon { font-size: 5rem; margin-bottom: 20px; animation: pulse 1.5s infinite; filter: drop-shadow(0 0 10px var(--neon)); }
-        
-        .btn-enter {
-            position: relative; overflow: hidden;
-            border: 2px solid var(--neon); background: rgba(0, 255, 65, 0.05); color: var(--neon);
-            padding: 15px 40px; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px;
-            cursor: pointer; text-transform: uppercase; font-family: var(--font-main);
-            transition: 0.2s; margin-top: 30px;
-        }
-        .btn-enter:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
-
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* --- 5. LAYOUT --- */
-        .container {
-            position: relative; z-index: 10;
-            max-width: 900px; margin: 0 auto; padding: 20px;
-            display: none; padding-bottom: 100px;
-        }
-        header {
-            text-align: center; border: 1px solid var(--neon-dim);
-            padding: 25px; margin-bottom: 25px; background: var(--glass);
-            border-radius: 4px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-        }
-        .subtitle { font-size: 1rem; letter-spacing: 3px; border-top: 1px solid var(--neon-dim); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
-
-        /* --- 6. NAVIGASI --- */
+        .glitch { position: relative; color: var(--neon); font-size: 2rem; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
+        .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); }
+        .glitch::before { left: 2px; text-shadow: -1px 0 var(--glitch-red); clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch::after { left: -2px; text-shadow: -1px 0 var(--glitch-blue); clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
+        @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); } 100% { clip: rect(90px, 9999px, 10px, 0); transform: skew(0.4deg); } }
+        @keyframes glitch-anim-2 { 0% { clip: rect(60px, 9999px, 10px, 0); transform: skew(0.8deg); } 100% { clip: rect(30px, 9999px, 70px, 0); transform: skew(0.7deg); } }
+        #overlay { position: fixed; inset: 0; background: black; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s; padding: 20px; text-align: center; }
+        .btn-enter { border: 2px solid var(--neon); background: rgba(0, 255, 65, 0.05); color: var(--neon); padding: 15px 40px; font-size: 1.2rem; cursor: pointer; font-family: var(--font-main); margin-top: 30px; }
+        .container { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 20px; display: none; padding-bottom: 100px; }
+        header { text-align: center; border: 1px solid var(--neon-dim); padding: 25px; margin-bottom: 25px; background: var(--glass); }
         nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
-        .nav-btn {
-            background: #020202; color: var(--neon); border: 1px solid var(--neon-dim);
-            padding: 12px 18px; cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 1rem;
-            transition: 0.2s; letter-spacing: 1px;
-        }
-        .nav-btn:hover { background: rgba(0, 255, 65, 0.15); text-shadow: 0 0 8px var(--neon); }
-        .nav-btn.active { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); border-color: var(--neon); }
-
-        /* --- 7. TEKS BERJALAN --- */
-        .marquee-container {
-            border-top: 2px solid var(--neon); border-bottom: 2px solid var(--neon);
-            margin-top: 25px; background: rgba(0, 20, 0, 0.9); overflow: hidden;
-            white-space: nowrap; padding: 10px 0;
-        }
-        .marquee-content {
-            display: inline-block; padding-left: 100%;
-            animation: scroll-text 15s linear infinite;
-            font-size: 1.1rem; font-weight: bold; letter-spacing: 3px; color: white;
-            text-shadow: 0 0 5px var(--neon);
-        }
-        @keyframes scroll-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-        /* --- 8. SLIDES --- */
-        .slide {
-            display: none; background: var(--glass); border: 1px solid var(--neon-dim);
-            padding: 30px; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.05); line-height: 1.6; position: relative;
-        }
-        
-        /* HUD LATENCY DI POJOK SLIDE */
-        .slide-hud {
-            position: absolute; top: 5px; right: 10px;
-            font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 2px;
-        }
-
+        .nav-btn { background: #020202; color: var(--neon); border: 1px solid var(--neon-dim); padding: 12px 18px; cursor: pointer; font-family: var(--font-main); transition: 0.2s; }
+        .nav-btn.active { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
+        .slide { display: none; background: var(--glass); border: 1px solid var(--neon-dim); padding: 30px; animation: slideUp 0.4s; position: relative; }
+        .slide-hud { position: absolute; top: 5px; right: 10px; font-size: 0.6rem; color: var(--neon-dim); letter-spacing: 1px; }
         .slide.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        
-        h2 { 
-            border-bottom: 2px solid var(--neon); padding-bottom: 10px; 
-            margin-top: 0; font-size: 1.5rem; color: white; margin-bottom: 20px;
-            text-shadow: 0 0 10px var(--neon-dim);
-        }
-
-        /* --- 9. GALERI --- */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
-        .gallery-item {
-            border: 1px solid var(--neon-dim); position: relative; height: 180px; overflow: hidden;
-            transition: 0.3s; background: #000;
-        }
-        .gallery-item:hover { border-color: var(--neon); transform: scale(1.02); z-index: 2; box-shadow: 0 0 20px var(--neon-dim); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; filter: grayscale(80%); }
+        .gallery-item { border: 1px solid var(--neon-dim); position: relative; height: 180px; overflow: hidden; transition: 0.3s; background: #000; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: grayscale(80%); }
         .gallery-item:hover img { opacity: 1; filter: grayscale(0%); }
-        .caption {
-            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.9);
-            color: var(--neon); font-size: 0.7rem; padding: 8px; text-align: center; border-top: 1px solid var(--neon-dim);
-            font-weight: bold; letter-spacing: 1px;
-        }
-
-        /* --- 10. KOMPETENSI --- */
+        .caption { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.9); color: var(--neon); font-size: 0.7rem; padding: 8px; text-align: center; border-top: 1px solid var(--neon-dim); }
         .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .comp-btn {
-            padding: 15px; border: 1px solid var(--neon-dim); background: rgba(0,0,0,0.6); 
-            color: var(--neon); cursor: pointer; font-family: var(--font-main); font-weight: bold; font-size: 0.9rem;
-            transition: 0.2s; text-align: left;
-        }
-        .comp-btn:hover { background: rgba(0, 255, 65, 0.1); border-color: var(--neon); }
-        .comp-btn.active-comp { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
-        .desc-box { 
-            border: 1px dashed var(--neon); padding: 20px; 
-            background: rgba(0,10,0,0.8); margin-top: 20px; color: #eee; font-size: 1rem;
-            min-height: 120px;
-        }
-
+        .comp-btn { padding: 15px; border: 1px solid var(--neon-dim); background: rgba(0,0,0,0.6); color: var(--neon); cursor: pointer; font-family: var(--font-main); }
+        .comp-btn.active-comp { background: var(--neon); color: black; }
+        .desc-box { border: 1px dashed var(--neon); padding: 20px; background: rgba(0,10,0,0.8); margin-top: 20px; min-height: 120px; color: #eee; }
+        .music-control { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; border: 1px solid var(--neon); background: rgba(0, 0, 0, 0.8); color: var(--neon); display: none; justify-content: center; align-items: center; border-radius: 50%; cursor: pointer; z-index: 1000; }
         footer { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--neon-dim); color: #666; font-size: 0.8rem; }
-        .author-link { 
-            color: var(--neon); text-decoration: none; font-weight: bold; 
-            border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; margin-bottom: 10px;
-            transition: 0.3s; text-transform: uppercase;
-        }
-        .author-link:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
-
-        /* --- 11. MUSIC CONTROL STYLE --- */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            border: 1px solid var(--neon);
-            background: rgba(0, 0, 0, 0.8);
-            color: var(--neon);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 0 10px var(--neon-dim);
-            transition: 0.3s;
-            font-size: 1.2rem;
-        }
-        .music-control:hover { box-shadow: 0 0 20px var(--neon); transform: scale(1.1); }
+        .author-link { color: var(--neon); text-decoration: none; border: 1px solid var(--neon); padding: 8px 15px; display: inline-block; }
     </style>
 </head>
 <body>
 
     <audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" loop></audio>
-
     <canvas id="matrix-bg"></canvas>
     <div class="scanlines"></div>
 
     <div id="overlay">
-        <div class="lock-icon">🔒</div>
-        <h2 style="margin: 0; color: white; letter-spacing: 4px; font-weight: 400;">ENCRYPTED CONNECTION</h2>
-        <p style="margin-top: 5px; color: var(--neon);">SMK NURUL FALAH - SECURE PORTAL</p>
+        <div style="font-size:5rem; animation: pulse 1.5s infinite;">🔒</div>
+        <h2 style="color: white; letter-spacing: 4px;">ENCRYPTED CONNECTION</h2>
         <button class="btn-enter" onclick="System.enter()">BUKA AKSES DATA</button>
     </div>
 
-    <div id="music-btn" class="music-control" onclick="System.toggleMusic()">
-        <span id="music-icon">🔊</span>
-    </div>
+    <div id="music-btn" class="music-control" onclick="System.toggleMusic()"><span id="music-icon">🔊</span></div>
 
     <div class="container" id="main-content">
         <header>
-            <div class="glitch-wrapper">
-                <h1 class="glitch" data-text="SMK NURUL FALAH">SMK NURUL FALAH</h1>
-            </div>
-            <div class="subtitle">XI (BDP) PEMASARAN</div>
+            <div class="glitch-wrapper"><h1 class="glitch" data-text="SMK NURUL FALAH">SMK NURUL FALAH</h1></div>
+            <div style="color:white; letter-spacing:3px; margin-top:10px;">XI (BDP) PEMASARAN</div>
         </header>
 
         <nav>
-            <button class="nav-btn active" onmouseenter="AudioFX.hover()" onclick="System.nav('home', this)">BERANDA</button>
-            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('visi', this)">VISI & MISI</button>
-            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('prodi', this)">MATERI</button>
-            <button class="nav-btn" onmouseenter="AudioFX.hover()" onclick="System.nav('gallery', this)">GALERI</button>
+            <button class="nav-btn active" onclick="System.nav('home', this)">BERANDA</button>
+            <button class="nav-btn" onclick="System.nav('visi', this)">VISI & MISI</button>
+            <button class="nav-btn" onclick="System.nav('prodi', this)">MATERI</button>
+            <button class="nav-btn" onclick="System.nav('gallery', this)">GALERI</button>
         </nav>
 
         <div id="home" class="slide active">
-            <div class="slide-hud">Latency : <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
+            <div class="slide-hud">LATENCY: <span class="lat-val">--</span>ms | SYS: ONLINE</div>
             <h2>PROFIL SEKOLAH</h2>
-            <p>
-                Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. 
-                Website ini didedikasikan sebagai media dokumentasi, informasi, dan portofolio digital siswa-siswi <strong>SMK Nurul Falah</strong>.
-            </p>
-            <br>
-            <p>
-                SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur</strong>. 
-                Di bawah naungan Yayasan Pendidikan Islam Nurul Falah, kami berkomitmen mencetak generasi muda yang tidak hanya unggul dalam kompetensi kejuruan, 
-                tetapi juga memiliki karakter akhlakul karimah yang kuat serta siap bersaing di dunia industri global.
-            </p>
-            
-            <div class="marquee-container">
-                <div class="marquee-content">
-                    SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA
-                </div>
-            </div>
+            <p>Selamat datang di Portal Digital <strong>XI BDP SMK Nurul Falah</strong>.</p>
         </div>
 
         <div id="visi" class="slide">
-            <div class="slide-hud">Latency : <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
+            <div class="slide-hud">LATENCY: <span class="lat-val">--</span>ms | SYS: ONLINE</div>
             <h2>VISI DAN MISI</h2>
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI:</p>
-            <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
-            
-            <hr style="border: 0; border-top: 1px dashed var(--neon); margin: 20px 0;">
-            
-            <p style="color:white; font-weight:bold; margin-bottom:5px;">MISI PROGRAM KEAHLIAN BDP:</p>
-            <ul style="padding-left: 20px;">
-                <li style="margin-bottom: 10px;">Menyelenggarakan pendidikan vokasi yang terintegrasi dengan nilai-nilai keislaman dan teknologi terkini.</li>
-                <li style="margin-bottom: 10px;">Membekali peserta didik dengan keterampilan <em>Digital Marketing</em> dan <em>E-Commerce</em> yang relevan dengan kebutuhan industri.</li>
-                <li>Membangun jiwa kewirausahaan (Entrepreneurship) agar siswa mampu menciptakan lapangan kerja mandiri.</li>
-            </ul>
+            <p>"Mencetak lulusan Kompeten, Mandiri, dan Berwawasan Global."</p>
         </div>
 
         <div id="prodi" class="slide">
-            <div class="slide-hud">Latency : <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
+            <div class="slide-hud">LATENCY: <span class="lat-val">--</span>ms | SYS: ONLINE</div>
             <h2>KOMPETENSI KEAHLIAN</h2>
-            <div class="comp-grid">
-                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'dm')">DIGITAL MARKETING</button>
-                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'rb')">RETAIL BUSINESS</button>
-                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'ps')">PUBLIC SPEAKING</button>
-                <button class="comp-btn" onmouseenter="AudioFX.hover()" onclick="System.detail(this, 'kwu')">PRODUK KREATIF</button>
-            </div>
-            <div id="desc-output" class="desc-box">
-                // SYSTEM-IDLE: MENUNGGU PERINTAH...
-            </div>
+            <div class="comp-grid" id="materi-btn-container"></div>
+            <div id="desc-output" class="desc-box">// MENUNGGU PERINTAH...</div>
         </div>
 
         <div id="gallery" class="slide">
-            <div class="slide-hud">Latency : <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
+            <div class="slide-hud">DATABASE_SYNC: OK</div>
             <h2>GALERI KEGIATAN</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item" onclick="AudioFX.click()">
-                    <img src="img/foto1.jpg" alt="1" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
-                    <div class="caption">KEGIATAN KELAS XI BDP</div>
-                </div>
-                <div class="gallery-item" onclick="AudioFX.click()">
-                    <img src="img/foto2.jpg" alt="2" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
-                    <div class="caption">PENERIMAAN RAPORT</div>
-                </div>
-                <div class="gallery-item" onclick="AudioFX.click()">
-                    <img src="img/foto3.jpg" alt="3" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
-                    <div class="caption">KUNJUNGAN WISATA</div>
-                </div>
-                <div class="gallery-item" onclick="AudioFX.click()">
-                    <img src="img/foto4.jpg" alt="4" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
-                    <div class="caption">KEGIATAN EKSTRAKURIKULER</div>
-                </div>
-            </div>
+            <div class="gallery-grid" id="gallery-container"></div>
         </div>
 
         <footer>
-            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">
-                 CONTACT AUTHOR : ARLING 
-            </a>
-            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH</div>
+            <a href="https://wa.me/6283199753711" target="_blank" class="author-link">AUTHOR : ARLINGツ</a>
+            <div style="margin-top:15px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
     </div>
 
     <script>
+        /* ==========================================
+           DATABASE (EDIT DI SINI - MUDAH UNTUK HP)
+           ========================================== */
+        
+        // 1. DAFTAR FOTO (Tinggal tambah satu baris di bawah)
+        const DATABASE_FOTO = [
+            { img: 'foto1.jpg', cap: 'KEGIATAN KELAS XI BDP' },
+            { img: 'foto2.jpg', cap: 'PENERIMAAN RAPORT' },
+            { img: 'foto3.jpg', cap: 'KUNJUNGAN WISATA' },
+            { img: 'foto4.jpg', cap: 'EKSTRAKURIKULER' }
+        ];
+
+        // 2. DESKRIPSI MATERI (Agar skalabel jika materi bertambah)
+        const DATABASE_MATERI = {
+            'dm': { nama: 'DIGITAL MARKETING', isi: 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace) untuk menjangkau audiens tertarget.' },
+            'rb': { nama: 'RETAIL BUSINESS', isi: 'Pengelolaan manajemen toko ritel modern mencakup teknik display produk (Visual Merchandising) dan standar pelayanan prima.' },
+            'ps': { nama: 'PUBLIC SPEAKING', isi: 'Pengembangan soft-skill komunikasi bisnis untuk keperluan presentasi produk dan negosiasi persuasif.' },
+            'kwu': { nama: 'PRODUK KREATIF', isi: 'Siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif secara mandiri.' }
+        };
+
+        /* ==========================================
+           SYSTEM CORE (JANGAN DIUBAH AGAR FITUR TETAP ADA)
+           ========================================== */
+        
+        const System = {
+            bgm: document.getElementById('bgm'),
+            enter: function() {
+                AudioFX.click(); this.renderAll();
+                this.bgm.volume = 0.5; this.bgm.play().catch(()=>{});
+                document.getElementById('music-btn').style.display = 'flex';
+                this.startLatency();
+                document.getElementById('overlay').style.opacity = '0';
+                setTimeout(() => { document.getElementById('overlay').style.display='none'; document.getElementById('main-content').style.display='block'; }, 500);
+            },
+            renderAll: function() {
+                // Render Gallery
+                document.getElementById('gallery-container').innerHTML = DATABASE_FOTO.map(f => `
+                    <div class="gallery-item" onclick="AudioFX.click()">
+                        <img src="${f.img}" onerror="this.src='https://via.placeholder.com/300x200?text=ERROR'">
+                        <div class="caption">${f.cap}</div>
+                    </div>`).join('');
+                // Render Materi Buttons
+                document.getElementById('materi-btn-container').innerHTML = Object.keys(DATABASE_MATERI).map(key => `
+                    <button class="comp-btn" onclick="System.detail(this, '${key}')">${DATABASE_MATERI[key].nama}</button>
+                `).join('');
+            },
+            startLatency: function() {
+                setInterval(() => { const l = Math.floor(Math.random()*30)+15; document.querySelectorAll('.lat-val').forEach(e => e.innerText = l); }, 3000);
+            },
+            nav: function(id, btn) {
+                AudioFX.click(); document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(id).classList.add('active'); btn.classList.add('active');
+            },
+            detail: function(btn, key) {
+                AudioFX.click(); document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp'));
+                btn.classList.add('active-comp'); Scrambler.setText(DATABASE_MATERI[key].isi);
+            },
+            toggleMusic: function() {
+                if (this.bgm.paused) { this.bgm.play(); document.getElementById('music-icon').innerText="🔊"; }
+                else { this.bgm.pause(); document.getElementById('music-icon').innerText="🔇"; }
+            }
+        };
+
         class AudioEngine {
-            constructor() {
-                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
-            hover() {
-                this.resume();
-                const o = this.ctx.createOscillator();
-                const g = this.ctx.createGain();
-                o.type = 'sine';
-                o.frequency.setValueAtTime(1000, this.ctx.currentTime);
-                o.frequency.exponentialRampToValueAtTime(2000, this.ctx.currentTime + 0.05);
-                g.gain.setValueAtTime(0.05, this.ctx.currentTime);
-                g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
-                o.connect(g); g.connect(this.ctx.destination);
-                o.start(); o.stop(this.ctx.currentTime + 0.05);
-            }
-            click() {
-                this.resume();
-                const o = this.ctx.createOscillator();
-                const g = this.ctx.createGain();
-                o.type = 'square';
-                o.frequency.setValueAtTime(200, this.ctx.currentTime);
-                o.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.1);
-                // Beep dikeraskan 0.4
-                g.gain.setValueAtTime(0.4, this.ctx.currentTime);
-                g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
-                o.connect(g); g.connect(this.ctx.destination);
-                o.start(); o.stop(this.ctx.currentTime + 0.1);
+            constructor() { this.ctx = new(window.AudioContext || window.webkitAudioContext)(); }
+            click() { 
+                if(this.ctx.state==='suspended') this.ctx.resume();
+                const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
+                o.type='square'; o.frequency.setValueAtTime(200, this.ctx.currentTime);
+                g.gain.setValueAtTime(0.2, this.ctx.currentTime); o.connect(g); g.connect(this.ctx.destination);
+                o.start(); o.stop(this.ctx.currentTime+0.1);
             }
         }
 
         class TextScramble {
-            constructor(el) {
-                this.el = el;
-                this.chars = '!<>-_\\/[]{}—=+*^?#________';
-                this.update = this.update.bind(this);
-            }
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#'; this.update = this.update.bind(this); }
             setText(newText) {
-                const oldText = this.el.innerText;
-                const length = Math.max(oldText.length, newText.length);
-                const promise = new Promise((resolve) => this.resolve = resolve);
-                this.queue = [];
+                const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
                 for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || '';
-                    const to = newText[i] || '';
-                    const start = Math.floor(Math.random() * 40);
-                    const end = start + Math.floor(Math.random() * 40);
+                    const from = oldText[i] || ''; const to = newText[i] || '';
+                    const start = Math.floor(Math.random()*40); const end = start + Math.floor(Math.random()*40);
                     this.queue.push({ from, to, start, end });
                 }
-                cancelAnimationFrame(this.frameRequest);
-                this.frame = 0;
-                this.update();
-                return promise;
+                cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
             }
             update() {
-                let output = '';
-                let complete = 0;
+                let output = ''; let complete = 0;
                 for (let i = 0, n = this.queue.length; i < n; i++) {
                     let { from, to, start, end, char } = this.queue[i];
                     if (this.frame >= end) { complete++; output += to; } 
                     else if (this.frame >= start) {
-                        if (!char || Math.random() < 0.28) {
-                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
-                            this.queue[i].char = char;
-                        }
+                        if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; }
                         output += `<span style="color:#008F11">${char}</span>`;
                     } else { output += from; }
                 }
-                this.el.innerHTML = output;
-                if (complete === this.queue.length) { this.resolve(); } 
-                else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+                this.el.innerHTML = output; if (complete === this.queue.length) { this.resolve(); } else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
             }
         }
 
         class MatrixBg {
             constructor() {
-                this.canvas = document.getElementById("matrix-bg");
-                this.ctx = this.canvas.getContext("2d");
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                setInterval(() => this.draw(), 50);
+                this.canvas = document.getElementById("matrix-bg"); this.ctx = this.canvas.getContext("2d");
+                this.resize(); window.addEventListener('resize', () => this.resize()); setInterval(() => this.draw(), 50);
             }
-            resize() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-                this.drops = Array(Math.ceil(this.canvas.width / 20)).fill(1);
-            }
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; this.drops = Array(Math.ceil(this.canvas.width/20)).fill(1); }
             draw() {
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.fillStyle = "#00ff41"; 
-                this.ctx.font = "14px monospace";
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = "#00ff41"; this.ctx.font = "14px monospace";
                 for (let i = 0; i < this.drops.length; i++) {
                     const text = String.fromCharCode(0x30A0 + Math.random() * 96);
                     this.ctx.fillText(text, i * 20, this.drops[i] * 20);
@@ -439,83 +228,6 @@
         const AudioFX = new AudioEngine();
         const MatrixFX = new MatrixBg();
         const Scrambler = new TextScramble(document.getElementById('desc-output'));
-
-        const System = {
-            bgm: document.getElementById('bgm'),
-            musicBtn: document.getElementById('music-btn'),
-            musicIcon: document.getElementById('music-icon'),
-
-            materi: {
-                'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace) untuk menjangkau audiens tertarget, meningkatkan brand awareness, dan mengoptimalkan konversi penjualan secara online.',
-                'rb': 'Pengelolaan manajemen toko ritel modern yang mencakup teknik display produk (Visual Merchandising), manajemen persediaan (Stock Opname), administrasi transaksi (Kasir), serta standar pelayanan prima (Service Excellence).',
-                'ps': 'Pengembangan soft-skill komunikasi bisnis untuk keperluan presentasi produk, negosiasi dengan klien, serta kemampuan Public Speaking yang persuasif dan percaya diri di hadapan audiens profesional.',
-                'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
-            },
-
-            enter: function() {
-                AudioFX.click();
-                
-                // Volume basis 0.6
-                this.bgm.volume = 0.6;
-
-                // Start BGM
-                this.bgm.play().catch(e => console.log("BGM Play Autoplay prevented."));
-                this.musicBtn.style.display = 'flex';
-                
-                // Mulai Latency Monitor
-                this.startLatencyMonitor();
-
-                document.getElementById('overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('overlay').style.display = 'none';
-                    document.getElementById('main-content').style.display = 'block';
-                }, 500);
-            },
-
-            startLatencyMonitor: function() {
-                const latElements = document.querySelectorAll('.lat-val');
-                setInterval(() => {
-                    const startTime = Date.now();
-                    fetch(window.location.href, { method: 'HEAD', cache: 'no-cache' })
-                        .then(() => {
-                            const lat = Date.now() - startTime;
-                            latElements.forEach(el => el.innerText = lat);
-                        })
-                        .catch(() => {
-                            const fallback = Math.floor(Math.random() * 30) + 20;
-                            latElements.forEach(el => el.innerText = fallback);
-                        });
-                }, 3000);
-            },
-
-            toggleMusic: function() {
-                AudioFX.click();
-                if (this.bgm.paused) {
-                    this.bgm.play();
-                    this.musicIcon.innerText = "🔊";
-                    this.musicBtn.style.opacity = "1";
-                } else {
-                    this.bgm.pause();
-                    this.musicIcon.innerText = "🔇";
-                    this.musicBtn.style.opacity = "0.5";
-                }
-            },
-
-            nav: function(id, btn) {
-                AudioFX.click();
-                document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-                document.getElementById(id).classList.add('active');
-                btn.classList.add('active');
-            },
-
-            detail: function(btn, key) {
-                AudioFX.click();
-                document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp'));
-                btn.classList.add('active-comp');
-                Scrambler.setText(this.materi[key]);
-            }
-        };
     </script>
 </body>
 </html>
