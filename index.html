@@ -34,7 +34,7 @@
         }
 
         /* --- 2. ADVANCED MATRIX BACKGROUND --- */
-        canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.4; }
+        canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.6; }
         
         .scanlines { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -320,7 +320,7 @@
 
         <footer>
             <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">
-                 CONTACT AUTHOR: ARLING 
+                 CONTACT AUTHOR : ARLING 
             </a>
             <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
@@ -415,9 +415,9 @@
                 this.drops = Array(Math.ceil(this.canvas.width / 20)).fill(1);
             }
             draw() {
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; 
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.fillStyle = "#0f0"; 
+                this.ctx.fillStyle = "#0ff41"; 
                 this.ctx.font = "14px monospace";
                 for (let i = 0; i < this.drops.length; i++) {
                     const text = String.fromCharCode(0x30A0 + Math.random() * 96);
