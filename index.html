@@ -34,7 +34,7 @@
         }
 
         /* --- 2. ADVANCED MATRIX BACKGROUND --- */
-        /* Opacity 0.8 untuk kontras maksimal */
+        /* Opacity dinaikkan ke 0.8 agar kontras Matrix sangat jelas */
         canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.8; }
         
         .scanlines { 
@@ -110,23 +110,7 @@
             padding: 25px; margin-bottom: 25px; background: var(--glass);
             border-radius: 4px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
-
-        /* SUBTITLE BARU: Gerakan Naik-Turun & Siluet Mini */
-        .subtitle { 
-            font-size: 1rem; 
-            letter-spacing: 3px; 
-            border-top: 1px solid var(--neon-dim); 
-            display: inline-block; 
-            padding-top: 10px; 
-            color: #fff; 
-            margin-top: 10px;
-            text-shadow: 0 5px 15px rgba(0, 255, 0, 0.4); /* Efek Siluet */
-            animation: floating 3s ease-in-out infinite; /* Efek Mengapung */
-        }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+        .subtitle { font-size: 1rem; letter-spacing: 3px; border-top: 1px solid var(--neon-dim); display: block; padding-top: 10px; color: #fff; margin-top: 10px; }
 
         /* --- 6. NAVIGASI --- */
         nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
@@ -368,7 +352,7 @@
                 o.type = 'square';
                 o.frequency.setValueAtTime(200, this.ctx.currentTime);
                 o.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.1);
-                // Beep keras (0.4)
+                // Beep dikeraskan sesuai permintaan (0.4)
                 g.gain.setValueAtTime(0.4, this.ctx.currentTime);
                 g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
                 o.connect(g); g.connect(this.ctx.destination);
@@ -419,6 +403,7 @@
             }
         }
 
+        /* Image of Matrix rain code effect logic */
         class MatrixBg {
             constructor() {
                 this.canvas = document.getElementById("matrix-bg");
@@ -433,9 +418,10 @@
                 this.drops = Array(Math.ceil(this.canvas.width / 20)).fill(1);
             }
             draw() {
+                // Background diatur ke 0.1 agar kontras teks jatuh lebih menonjol
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                // Warna Matrix Neon Terang
+                // Koreksi Hex Color ke Hijau Neon Terang agar terlihat
                 this.ctx.fillStyle = "#00ff41"; 
                 this.ctx.font = "14px monospace";
                 for (let i = 0; i < this.drops.length; i++) {
@@ -466,7 +452,7 @@
             enter: function() {
                 AudioFX.click();
                 
-                // Volume Basis 0.6
+                // Volume diatur ke 0.6 sesuai permintaan
                 this.bgm.volume = 0.6;
 
                 // Start BGM
