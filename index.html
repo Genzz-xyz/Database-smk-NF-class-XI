@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMK NURUL FALAH</title>
+    <title>SMK NURUL FALAH | SECURE SYSTEM</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,7 +135,7 @@
         }
         @keyframes scroll-text { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* --- 8. SLIDES --- */
+        /* --- 8. SLIDES & HUD --- */
         .slide {
             display: none; background: var(--glass); border: 1px solid var(--neon-dim);
             padding: 30px; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -245,11 +245,11 @@
         <div id="home" class="slide active">
             <div class="slide-hud">FETCH: <span class="lat-val">--</span>ms | SYSTEM-RUNNING</div>
             <h2>PROFIL SEKOLAH</h2>
-            <p>Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. Website ini didedikasikan sebagai dokumentasi siswa-siswi <strong>SMK Nurul Falah</strong>.</p>
+            <p>Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. Website ini didedikasikan sebagai media dokumentasi siswa-siswi <strong>SMK Nurul Falah</strong>.</p>
             <br>
-            <p>Berlokasi di <strong>Desa Gedung Wani Timur, Kec. Margatiga, Lampung Timur</strong>. Di bawah naungan Yayasan Pendidikan Islam Nurul Falah.</p>
+            <p>SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur</strong>. Di bawah naungan Yayasan Pendidikan Islam Nurul Falah.</p>
             <div class="marquee-container">
-                <div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SMK NUFA JAYA</div>
+                <div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA</div>
             </div>
         </div>
 
@@ -292,7 +292,6 @@
     </div>
 
     <script>
-        // CONFIG AUDIO
         class AudioEngine {
             constructor() { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
             resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
@@ -314,7 +313,6 @@
             }
         }
 
-        // MATRIX RAIN
         class MatrixBg {
             constructor() {
                 this.canvas = document.getElementById("matrix-bg");
@@ -337,7 +335,6 @@
             }
         }
 
-        // TEXT SCRAMBLER
         class TextScramble {
             constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________'; }
             setText(newText) {
@@ -370,18 +367,22 @@
         const AudioFX = new AudioEngine(), MatrixFX = new MatrixBg();
         const Scrambler = new TextScramble(document.getElementById('desc-output'));
 
-        // --- SYSTEM CORE ---
         const System = {
             bgm: document.getElementById('bgm'),
             musicBtn: document.getElementById('music-btn'),
-            // EDIT DAFTAR FOTO DI SINI:
-            daftarFoto: [1, 2, 3, 4, 5, 6], 
+            // EDIT CAPTION SATU-SATU DI SINI
+            daftarFoto: [
+                { id: 1, caption: "KEGIATAN KELAS XI BDP" },
+                { id: 2, caption: "PENERIMAAN RAPORT" },
+                { id: 3, caption: "KUNJUNGAN WISATA" },
+                { id: 4, caption: "EKSTRAKURIKULER" }
+            ],
 
             materi: {
                 'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace).',
                 'rb': 'Pengelolaan manajemen toko ritel modern mencakup teknik display produk dan administrasi transaksi.',
                 'ps': 'Pengembangan soft-skill komunikasi bisnis untuk negosiasi klien dan presentasi produk persuasif.',
-                'kwu': 'Siswa dibimbing merancang, memproduksi, dan memasarkan produk inovatif serta rencana bisnis.'
+                'kwu': 'Implementasi PKK dimana siswa dibimbing merancang, memproduksi, dan memasarkan produk inovatif.'
             },
 
             enter: function() {
@@ -390,7 +391,7 @@
                 this.bgm.play().catch(() => {});
                 this.musicBtn.style.display = 'flex';
                 this.renderGallery();
-                this.startLatency();
+                this.startLatencyMonitor();
                 document.getElementById('overlay').style.opacity = '0';
                 setTimeout(() => { document.getElementById('overlay').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }, 500);
             },
@@ -398,19 +399,19 @@
             renderGallery: function() {
                 const container = document.getElementById('gallery-container');
                 container.innerHTML = '';
-                this.daftarFoto.forEach(no => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.onclick = () => AudioFX.click();
-                    item.innerHTML = `
-                        <img src="img/foto${no}.jpg" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=DATA_V.${no}'">
-                        <div class="caption">DOKUMENTASI_0${no}</div>
+                this.daftarFoto.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'gallery-item';
+                    div.onclick = () => AudioFX.click();
+                    div.innerHTML = `
+                        <img src="img/foto${item.id}.jpg" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=DATA_V.${item.id}'">
+                        <div class="caption">${item.caption}</div>
                     `;
-                    container.appendChild(item);
+                    container.appendChild(div);
                 });
             },
 
-            startLatency: function() {
+            startLatencyMonitor: function() {
                 const latElements = document.querySelectorAll('.lat-val');
                 setInterval(() => {
                     const start = Date.now();
