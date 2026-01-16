@@ -10,12 +10,6 @@
 
 ---
 
-## 📸 Screenshots
-*(Silakan upload screenshot website kamu ke folder img di github lalu ganti link di bawah ini, atau hapus bagian ini jika belum ada)*
-> ![Preview](https://via.placeholder.com/800x400/000000/00ff00?text=SMK+NUFA+SYSTEM+PREVIEW)
-
----
-
 ## ✨ Fitur Utama (Key Features)
 
 Project ini bukan sekadar HTML biasa, tetapi dilengkapi dengan **Advanced JavaScript & CSS Animations**:
