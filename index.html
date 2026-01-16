@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMK NURUL FALAH</title>
+    <title>SMK NURUL FALAH - DIGITAL PORTAL</title>
+    
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -298,7 +300,7 @@
             <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">
                  CONTACT AUTHOR : ARLING 
             </a>
-            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH</div>
+            <div style="margin-top: 15px;">&copy; 2026 SMK NURUL FALAH - v3.3 GLOBAL</div>
         </footer>
     </div>
 
@@ -310,11 +312,14 @@
         // Cukup tambah/edit baris di dalam kurung siku [...]
         // Format: { file: 'namagambar.jpg', caption: 'Keterangan' },
         const DATABASE_FOTO = [
-            { file: 'foto1.jpg', caption: 'KEGIATAN KELAS XI BDP' },
+            { file: 'foto1.jpg', caption: 'KEGIATAN SEKOLAH' },
             { file: 'foto2.jpg', caption: 'PENERIMAAN RAPORT' },
             { file: 'foto3.jpg', caption: 'KUNJUNGAN WISATA' },
             { file: 'foto4.jpg', caption: 'KEGIATAN EKSTRAKURIKULER' },
             { file: 'foto5.jpg', caption: 'ULANGAN SEMESTER' },
+            { file: 'foto6.jpg', caption: 'PERKEMAHAN' },
+            { file: 'foto7.jpg', caption: 'MOMEN MBG PERTAMA' },
+            { file: 'foto8.jpg', caption: 'EVENT TARI' },
             // Tambahkan baris baru di bawah sini jika ada foto baru
             // { file: 'foto5.jpg', caption: 'JUDUL KEGIATAN BARU' } 
         ];
@@ -387,7 +392,9 @@
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.fillStyle = "#00ff41"; this.ctx.font = "14px monospace";
                 for (let i = 0; i < this.drops.length; i++) {
-                    const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                    // [UPDATE] MENGGUNAKAN ANGKA 0-9 UNTUK TAMPILAN GLOBAL DATA STREAM
+                    const text = Math.floor(Math.random() * 10).toString();
+                    
                     this.ctx.fillText(text, i * 20, this.drops[i] * 20);
                     if (this.drops[i] * 20 > this.canvas.height && Math.random() > 0.975) this.drops[i] = 0;
                     this.drops[i]++;
