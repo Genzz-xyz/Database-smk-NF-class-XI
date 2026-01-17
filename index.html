@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SMK NURUL FALAH - THE GLIMPSE OF FUTURE</title>
     
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3C!-- Background Bumi Hitam --%3E%3Ccircle cx="50" cy="50" r="45" fill="black" stroke="white" stroke-width="4"/%3E%3C!-- Garis Khatulistiwa --%3E%3Cline x1="5" y1="50" x2="95" y2="50" stroke="white" stroke-width="2"/%3E%3C!-- Garis Bujur Tengah (Diam) --%3Cline x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="2"/%3E%3C!-- Animasi Rotasi (Garis Melengkung) --%3E%3Cellipse cx="50" cy="50" rx="10" ry="45" fill="none" stroke="white" stroke-width="3"%3E%3Canimate attributeName="rx" values="0;44;0" dur="2s" repeatCount="indefinite"/%3E%3C/ellipse%3E%3C/svg%3E'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -468,7 +468,7 @@
 
         // --- 3. SYSTEM LOGIC (GLOBAL VISITOR SYNC) ---
         
-        const System = {
+                const System = {
             bgm: document.getElementById('bgm'),
             musicBtn: document.getElementById('music-btn'),
             musicIcon: document.getElementById('music-icon'),
@@ -484,25 +484,27 @@
                 { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }  
             ],
 
-            currentVisits: 940, // Angka dasar awal
+            // --- CONFIG COUNTER GLOBAL ---
+            baseOffset: 4900, // Angka manipulasi awal
+            currentVisits: 0, 
 
             // --- FUNGSI GLOBAL VISITOR SYNC ---
-            // Menggunakan CountAPI agar sinkron di seluruh dunia
-            // Jika API down, otomatis fallback ke LocalStorage (Anti-Crash)
             syncVisitorCount: function() {
                 return new Promise(resolve => {
-                    // Set timeout 2 detik agar tidak loading lama jika internet lambat
+                    // Timeout 1.5 detik (Agar UX tidak macet jika sinyal jelek)
                     const timeout = setTimeout(() => {
                         this.useLocalFallback();
                         resolve();
-                    }, 2000);
+                    }, 1500);
 
-                    // Fetch ke API Publik
+                    // Fetch ke API Publik (CountAPI)
+                    // Namespace: smknufabdp2026
                     fetch('https://api.countapi.xyz/hit/smknufabdp2026/visits')
                         .then(res => res.json())
                         .then(data => {
                             clearTimeout(timeout);
-                            this.currentVisits = data.value;
+                            // RUMUS: Angka Real Server + 4900
+                            this.currentVisits = data.value + this.baseOffset;
                             resolve();
                         })
                         .catch(() => {
@@ -513,11 +515,15 @@
                 });
             },
 
-            // Fungsi Fallback Cerdas (Jika API Error)
+            // Fungsi Fallback (Jika Server Down/Offline)
             useLocalFallback: function() {
-                let localCount = localStorage.getItem('nufa_visits') || 940;
-                this.currentVisits = parseInt(localCount) + 1;
-                localStorage.setItem('nufa_visits', this.currentVisits);
+                let localCount = localStorage.getItem('nufa_visits');
+                if(!localCount) localCount = 1;
+                else localCount = parseInt(localCount) + 1;
+                
+                localStorage.setItem('nufa_visits', localCount);
+                // Tetap tambah 4900 walau offline
+                this.currentVisits = localCount + this.baseOffset;
             },
 
             loadSavedTheme: function() {
@@ -535,12 +541,12 @@
                 MatrixFX.setColor(theme.hex);
             },
 
-            // --- SYSTEM LOG WITH GLOBAL COUNT ---
+            // --- SYSTEM LOG DENGAN ANGKA 4900++ ---
             initLog: function() {
                 const logs = [
                     "Scanning ports...", 
                     "Encrypting connection...", 
-                    `Global Access: ${this.currentVisits} Users`, // DATA SINKRON
+                    `Global Access: ${this.currentVisits} Users`, // TAMPILKAN HASIL AKHIR
                     "System stable.", 
                     "Monitoring network..."
                 ];
@@ -551,31 +557,38 @@
                 }, 2500); 
             },
 
-            // --- MAIN ENTRY POINT ---
+            // --- MAIN ENTRY POINT (DENGAN EFEK LOADING) ---
             enter: async function() {
                 AudioFX.click();
                 
-                // Audio Handling
+                // 1. Audio
                 const playPromise = this.bgm.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => { console.log("Audio waiting interaction."); });
                 }
                 this.bgm.volume = 0.6;
                 
-                // Tunggu sinkronisasi visitor (max 2 detik)
+                // 2. Efek Loading Tombol (UX)
+                const btnEnter = document.querySelector('.btn-enter');
+                const oldText = btnEnter.innerText;
+                btnEnter.innerText = "CONNECTING..."; // Feedback ke user
+
+                // 3. Tunggu Sync Server
                 await this.syncVisitorCount();
+                
+                btnEnter.innerText = oldText; // Balikkan teks
 
                 this.loadSavedTheme();
                 
-                // Tampilkan UI
+                // 4. Buka UI
                 this.musicBtn.style.display = 'flex'; 
                 this.colorBtn.style.display = 'flex';
                 
                 this.renderGallery(); 
                 this.startLatency(); 
-                this.initLog(); // Jalankan Log Global
+                this.initLog(); 
                 
-                // Animasi Masuk Konten
+                // Animasi Masuk
                 Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
 
                 // Buka Lockscreen
