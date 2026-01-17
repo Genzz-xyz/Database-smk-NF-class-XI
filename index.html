@@ -541,7 +541,7 @@
                 MatrixFX.setColor(theme.hex);
             },
 
-            // --- SYSTEM LOG DENGAN ANGKA 4900++ ---
+            // --- SYSTEM LOG DENGAN ANGKA
             initLog: function() {
                 const logs = [
                     "Scanning ports...", 
@@ -566,7 +566,7 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(error => { console.log("Audio waiting interaction."); });
                 }
-                this.bgm.volume = 0.6;
+                this.bgm.volume = 0.8;
                 
                 // 2. Efek Loading Tombol (UX)
                 const btnEnter = document.querySelector('.btn-enter');
