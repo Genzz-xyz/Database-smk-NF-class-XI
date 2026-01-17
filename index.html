@@ -281,8 +281,10 @@
             <div style="margin-top: 5px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
     </div>
+
     <script>
-        // --- 1. DATABASES LENGKAP (TIDAK DIPERSINGKAT) ---
+        // --- 1. DATABASES LENGKAP (GOLD STANDARD - TIDAK DIPERSINGKAT) ---
+        // Referensi: compile.html & index.html (Data Asli)
         
         const DATABASE_FOTO = [
             { file: 'foto1.jpg', caption: 'KEGIATAN SEKOLAH' },
@@ -327,7 +329,7 @@
             'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
         };
 
-        // --- 2. ENGINE (SCRAMBLER, AUDIO, MATRIX 3D) ---
+        // --- 2. ENGINE CORE (STABILITAS TINGGI - WORKSHOP.HTML) ---
 
         class AudioEngine {
             constructor() { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
@@ -349,6 +351,7 @@
         class ScramblerEngine {
             constructor() { this.chars = '!<>-_\\/[]{}—=+*^?#________'; }
             
+            // Animasi Tombol Navigasi
             animateClick(el) {
                 const originalText = el.getAttribute('data-original') || el.innerText;
                 if(!el.getAttribute('data-original')) el.setAttribute('data-original', originalText);
@@ -365,6 +368,7 @@
                 }, 40);
             }
 
+            // Animasi HTML Content (Beranda & Visi Misi)
             write(el, htmlContent) {
                 el.innerHTML = htmlContent;
                 const textNodes = [];
@@ -396,6 +400,7 @@
                 });
             }
 
+            // Animasi Simple Text (Materi)
             animate(el, newText) {
                 const length = newText.length; let frame = 0;
                 const interval = setInterval(() => {
@@ -461,6 +466,8 @@
         const MatrixFX = new ParallaxMatrix(); 
         const Scrambler = new ScramblerEngine();
 
+        // --- 3. SYSTEM LOGIC (GLOBAL VISITOR SYNC) ---
+        
         const System = {
             bgm: document.getElementById('bgm'),
             musicBtn: document.getElementById('music-btn'),
@@ -468,7 +475,7 @@
             log: document.getElementById('system-log'),
             colorBtn: document.getElementById('color-btn'),
             
-            // CONFIG WARNA
+            // Konfigurasi Warna
             colorIndex: 0,
             colors: [
                 { neon: '#0f0', dim: '#008F11', hex: '#0f0' },       
@@ -477,18 +484,40 @@
                 { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }  
             ],
 
-            // --- 1. FITUR BARU: VISITOR COUNTER LOGIC ---
-            getVisitorCount: function() {
-                let count = localStorage.getItem('nufa_visits');
-                // Jika data kosong (pengguna baru), mulai dari 940 (sesuai data analytics)
-                if (!count) {
-                    count = 940 + Math.floor(Math.random() * 10);
-                } else {
-                    // Jika data ada, tambah 1
-                    count = parseInt(count) + 1;
-                }
-                localStorage.setItem('nufa_visits', count);
-                return count;
+            currentVisits: 940, // Angka dasar awal
+
+            // --- FUNGSI GLOBAL VISITOR SYNC ---
+            // Menggunakan CountAPI agar sinkron di seluruh dunia
+            // Jika API down, otomatis fallback ke LocalStorage (Anti-Crash)
+            syncVisitorCount: function() {
+                return new Promise(resolve => {
+                    // Set timeout 2 detik agar tidak loading lama jika internet lambat
+                    const timeout = setTimeout(() => {
+                        this.useLocalFallback();
+                        resolve();
+                    }, 2000);
+
+                    // Fetch ke API Publik
+                    fetch('https://api.countapi.xyz/hit/smknufabdp2026/visits')
+                        .then(res => res.json())
+                        .then(data => {
+                            clearTimeout(timeout);
+                            this.currentVisits = data.value;
+                            resolve();
+                        })
+                        .catch(() => {
+                            clearTimeout(timeout);
+                            this.useLocalFallback();
+                            resolve();
+                        });
+                });
+            },
+
+            // Fungsi Fallback Cerdas (Jika API Error)
+            useLocalFallback: function() {
+                let localCount = localStorage.getItem('nufa_visits') || 940;
+                this.currentVisits = parseInt(localCount) + 1;
+                localStorage.setItem('nufa_visits', this.currentVisits);
             },
 
             loadSavedTheme: function() {
@@ -506,48 +535,50 @@
                 MatrixFX.setColor(theme.hex);
             },
 
-            // --- 2. UPDATE SYSTEM LOG (SWIPE TEXT) ---
+            // --- SYSTEM LOG WITH GLOBAL COUNT ---
             initLog: function() {
-                const visits = this.getVisitorCount(); // Ambil angka visitor
                 const logs = [
                     "Scanning ports...", 
                     "Encrypting connection...", 
-                    `Total Visits: ${visits} Users`, // TAMPIL DI SINI
+                    `Global Access: ${this.currentVisits} Users`, // DATA SINKRON
                     "System stable.", 
                     "Monitoring network..."
                 ];
                 let i = 0; 
                 setInterval(() => { 
                     this.log.innerText = ">> " + logs[i]; 
-                    i = (i + 1) % logs.length; // Loop pesan terus menerus
+                    i = (i + 1) % logs.length; 
                 }, 2500); 
             },
 
-            // --- 3. FUNGSI MASUK UTAMA ---
-            enter: function() {
+            // --- MAIN ENTRY POINT ---
+            enter: async function() {
                 AudioFX.click();
                 
-                // Fix Audio Autoplay
+                // Audio Handling
                 const playPromise = this.bgm.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => { console.log("Audio waiting interaction."); });
                 }
                 this.bgm.volume = 0.6;
                 
+                // Tunggu sinkronisasi visitor (max 2 detik)
+                await this.syncVisitorCount();
+
                 this.loadSavedTheme();
                 
-                // Tampilkan Kontrol
+                // Tampilkan UI
                 this.musicBtn.style.display = 'flex'; 
                 this.colorBtn.style.display = 'flex';
                 
                 this.renderGallery(); 
                 this.startLatency(); 
-                this.initLog(); // Jalankan Log Visitor
+                this.initLog(); // Jalankan Log Global
                 
-                // Masukkan konten Beranda dengan efek Scramble
+                // Animasi Masuk Konten
                 Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
 
-                // Hilangkan Lockscreen
+                // Buka Lockscreen
                 document.getElementById('overlay').style.opacity = '0';
                 setTimeout(() => { 
                     document.getElementById('overlay').style.display = 'none'; 
@@ -584,8 +615,8 @@
 
             toggleMusic: function() {
                 AudioFX.click();
-                if (this.bgm.paused) { this.bgm.play(); this.musicIcon.innerText = "矧"; this.musicBtn.style.opacity = "1"; }
-                else { this.bgm.pause(); this.musicIcon.innerText = "這"; this.musicBtn.style.opacity = "0.5"; }
+                if (this.bgm.paused) { this.bgm.play(); this.musicIcon.innerText = "🔊"; this.musicBtn.style.opacity = "1"; }
+                else { this.bgm.pause(); this.musicIcon.innerText = "🔇"; this.musicBtn.style.opacity = "0.5"; }
             },
 
             nav: function(id, btn) {
