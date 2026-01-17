@@ -442,7 +442,7 @@
             }
             setColor(c) { this.color = c; }
             draw() {
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.35)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.15)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.strokeStyle = this.color;
                 this.ripples.forEach((r, i) => {
                     this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.size, 0, Math.PI * 2);
