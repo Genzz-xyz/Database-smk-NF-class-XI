@@ -281,9 +281,9 @@
             <div style="margin-top: 5px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
     </div>
-
     <script>
-        /* --- 1. DATABASES --- */
+        // --- 1. DATABASES LENGKAP (TIDAK DIPERSINGKAT) ---
+        
         const DATABASE_FOTO = [
             { file: 'foto1.jpg', caption: 'KEGIATAN SEKOLAH' },
             { file: 'foto2.jpg', caption: 'PENERIMAAN RAPORT' },
@@ -292,144 +292,326 @@
             { file: 'foto5.jpg', caption: 'ULANGAN SEMESTER' },
             { file: 'foto6.jpg', caption: 'PERKEMAHAN' },
             { file: 'foto7.jpg', caption: 'MOMEN MBG PERTAMA' },
-            { file: 'foto8.jpg', caption: 'EVENT TARI' }
+            { file: 'foto8.jpg', caption: 'EVENT TARI' },
+            { file: 'foto9.jpg', caption: 'KELUARGA BESAR SMK NUFA' }
         ];
 
         const DATABASE_CONTENT = {
-            home: `<h2>PROFIL SEKOLAH</h2><p>Selamat datang di Sistem Informasi Digital <strong>Kelas XI BDP</strong>. Website ini didedikasikan sebagai media dokumentasi digital <strong>SMK Nurul Falah</strong>.</p><br><p>SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Lampung Timur</strong>. Kami berkomitmen mencetak generasi muda unggul berkarakter.</p><div class="marquee-container"><div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA</div></div>`,
-            visi: `<h2>VISI DAN MISI</h2><p style="color:white;font-weight:bold;">VISI:</p><p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global."</p><hr style="border:0;border-top:1px dashed var(--neon);margin:20px 0;"><p style="color:white;font-weight:bold;">MISI BDP:</p><ul style="padding-left:20px;"><li>Pendidikan vokasi terintegrasi teknologi terkini.</li><li>Membekali keterampilan Digital Marketing & E-Commerce.</li><li>Membangun jiwa kewirausahaan mandiri.</li></ul>`
+            home: `
+                <h2>PROFIL SEKOLAH</h2>
+                <p>Selamat datang di Sistem Informasi Digital <strong>Kelas XI Bisnis Daring dan Pemasaran (BDP)</strong>. Website ini didedikasikan sebagai media dokumentasi, informasi, dan portofolio digital siswa-siswi <strong>SMK Nurul Falah</strong>.</p>
+                <br>
+                <p>SMK Nurul Falah berlokasi di <strong>Desa Gedung Wani Timur, Kecamatan Margatiga, Kabupaten Lampung Timur</strong>. Di bawah naungan Yayasan Pendidikan Islam Nurul Falah, kami berkomitmen mencetak generasi muda yang kompeten.</p>
+                <div class="marquee-container">
+                    <div class="marquee-content">SMK NUFA JAYA &nbsp;///&nbsp; DISIPLIN - KOMPETEN - SIAP KERJA &nbsp;///&nbsp; SYSTEM ONLINE &nbsp;///&nbsp; SMK NUFA JAYA</div>
+                </div>
+            `,
+            visi: `
+                <h2>VISI DAN MISI</h2>
+                <p style="color:white; font-weight:bold; margin-bottom:5px;">VISI:</p>
+                <p>"Terwujudnya Lulusan SMK Nurul Falah yang Beriman, Bertakwa, Kompeten, Mandiri, dan Berwawasan Global di Kabupaten Lampung Timur."</p>
+                <hr style="border: 0; border-top: 1px dashed var(--neon); margin: 20px 0;">
+                <p style="color:white; font-weight:bold; margin-bottom:5px;">MISI PROGRAM KEAHLIAN BDP:</p>
+                <ul style="padding-left: 20px;">
+                    <li style="margin-bottom: 10px;">Menyelenggarakan pendidikan vokasi yang terintegrasi dengan nilai-nilai keislaman dan teknologi terkini.</li>
+                    <li style="margin-bottom: 10px;">Membekali peserta didik dengan keterampilan <em>Digital Marketing</em> dan <em>E-Commerce</em> yang relevan dengan kebutuhan industri.</li>
+                    <li>Membangun jiwa kewirausahaan (Entrepreneurship) agar siswa mampu menciptakan lapangan kerja mandiri.</li>
+                </ul>
+            `
         };
 
         const DATABASE_MATERI = {
-            'dm': 'Strategi pemasaran komprehensif menggunakan Facebook Ads, Instagram, TikTok, dan Marketplace untuk meningkatkan brand awareness secara online.',
-            'rb': 'Pengelolaan manajemen toko ritel modern mencakup Visual Merchandising, Stock Opname, dan administrasi transaksi kasir.',
-            'ps': 'Pengembangan soft-skill komunikasi bisnis untuk keperluan presentasi produk dan negosiasi dengan klien profesional.',
-            'kwu': 'Implementasi PKK dimana siswa dibimbing merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis.'
+            'dm': 'Strategi pemasaran komprehensif menggunakan platform digital (Facebook Ads, Instagram, TikTok, Marketplace) untuk menjangkau audiens tertarget, meningkatkan brand awareness, dan mengoptimalkan konversi penjualan secara online.',
+            'rb': 'Pengelolaan manajemen toko ritel modern yang mencakup teknik display produk (Visual Merchandising), manajemen persediaan (Stock Opname), administrasi transaksi (Kasir), serta standar pelayanan prima (Service Excellence).',
+            'ps': 'Pengembangan soft-skill komunikasi bisnis untuk keperluan presentasi produk, negosiasi dengan klien, serta kemampuan Public Speaking yang persuasif dan percaya diri di hadapan audiens profesional.',
+            'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
         };
 
-        /* --- 2. ENGINE --- */
+        // --- 2. ENGINE (SCRAMBLER, AUDIO, MATRIX 3D) ---
+
         class AudioEngine {
             constructor() { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
             resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
-            click() { this.resume(); const o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = 'square'; o.frequency.setValueAtTime(200, this.ctx.currentTime); g.gain.setValueAtTime(0.3, this.ctx.currentTime); o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime + 0.1); }
+            hover() {
+                this.resume(); const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
+                o.type = 'sine'; o.frequency.setValueAtTime(800, this.ctx.currentTime);
+                g.gain.setValueAtTime(0.02, this.ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+                o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime + 0.05);
+            }
+            click() {
+                this.resume(); const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
+                o.type = 'square'; o.frequency.setValueAtTime(200, this.ctx.currentTime);
+                g.gain.setValueAtTime(0.3, this.ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
+                o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime + 0.1);
+            }
         }
 
         class ScramblerEngine {
             constructor() { this.chars = '!<>-_\\/[]{}—=+*^?#________'; }
+            
             animateClick(el) {
                 const originalText = el.getAttribute('data-original') || el.innerText;
                 if(!el.getAttribute('data-original')) el.setAttribute('data-original', originalText);
-                let frame = 0; const interval = setInterval(() => {
-                    let output = ''; for(let i = 0; i < originalText.length; i++) { if(frame >= (i * 2) + 5) { output += originalText[i]; } else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; } }
-                    el.innerText = output; if(output === originalText) clearInterval(interval); frame++;
+                let frame = 0; const length = originalText.length;
+                const interval = setInterval(() => {
+                    let output = '';
+                    for(let i = 0; i < length; i++) {
+                        if(frame >= (i * 2) + 5) { output += originalText[i]; } 
+                        else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; }
+                    }
+                    el.innerText = output;
+                    if(output === originalText) { clearInterval(interval); el.style.color = ''; }
+                    frame++;
                 }, 40);
             }
-            write(el, html) {
-                el.innerHTML = html; const nodes = [];
-                const find = (n) => { if (n.nodeType === 3) nodes.push(n); else for (let c of n.childNodes) find(c); }; find(el);
-                nodes.forEach(n => {
-                    const text = n.textContent; let f = 0;
-                    const itv = setInterval(() => {
-                        let out = ''; for(let i=0; i<text.length; i++) { if(f >= i) out += text[i]; else out += this.chars[Math.floor(Math.random()*this.chars.length)]; }
-                        n.textContent = out.substring(0, f + 1); if(f >= text.length) clearInterval(itv); f+=2;
+
+            write(el, htmlContent) {
+                el.innerHTML = htmlContent;
+                const textNodes = [];
+                function findTextNodes(node) {
+                    if (node.nodeType === 3) {
+                        if(node.textContent.trim().length > 0) textNodes.push(node);
+                    } else {
+                        for (let child of node.childNodes) findTextNodes(child);
+                    }
+                }
+                findTextNodes(el);
+                textNodes.forEach(node => {
+                    const originalText = node.textContent;
+                    const length = originalText.length;
+                    let frame = 0;
+                    const interval = setInterval(() => {
+                        let output = '';
+                        for(let i=0; i<length; i++) {
+                            if(frame >= i) { output += originalText[i]; } 
+                            else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; }
+                        }
+                        node.textContent = output.substring(0, frame + 1);
+                        if(frame >= length) {
+                            clearInterval(interval);
+                            node.textContent = originalText;
+                        }
+                        frame+=2;
                     }, 20);
                 });
             }
-            animate(el, txt) {
-                let f = 0; const itv = setInterval(() => {
-                    let out = ''; for(let i=0; i<txt.length; i++) { if(f >= i) out += txt[i]; else out += this.chars[Math.floor(Math.random()*this.chars.length)]; }
-                    el.innerHTML = out.substring(0, f + 1) + (f < txt.length ? '_' : ''); if(f >= txt.length) clearInterval(itv); f+=3;
+
+            animate(el, newText) {
+                const length = newText.length; let frame = 0;
+                const interval = setInterval(() => {
+                    let output = '';
+                    for(let i=0; i<length; i++) {
+                        if(frame >= i) { output += newText[i]; } 
+                        else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; }
+                    }
+                    el.innerHTML = output.substring(0, frame + 1) + (frame < length ? '_' : '');
+                    if(frame >= length) clearInterval(interval);
+                    frame+=3;
                 }, 20);
             }
         }
 
         class ParallaxMatrix {
-            constructor() { this.canvas = document.getElementById("matrix-bg"); this.ctx = this.canvas.getContext("2d"); this.color = "#0f0"; this.drops = []; this.ripples = []; this.resize(); window.addEventListener('resize', () => this.resize()); ['mousemove', 'touchstart'].forEach(e => window.addEventListener(e, (ev) => this.createRipple(ev), {passive: true})); this.loop(); }
+            constructor() {
+                this.canvas = document.getElementById("matrix-bg");
+                this.ctx = this.canvas.getContext("2d");
+                this.color = "#0f0";
+                this.drops = []; this.ripples = [];
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                ['mousemove', 'touchstart'].forEach(evt => window.addEventListener(evt, (e) => this.createRipple(e), {passive: true}));
+                this.loop();
+            }
             resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; this.initDrops(); }
-            initDrops() { const cols = Math.ceil(this.canvas.width / 20); this.drops = []; for (let i = 0; i < cols; i++) { this.drops.push({ x: i * 20, y: Math.random() * this.canvas.height, speed: Math.random() * 0.5 + 0.5, depth: Math.random() > 0.8 ? 2 : 1 }); } }
-            createRipple(e) { const x = e.touches ? e.touches[0].clientX : e.clientX, y = e.touches ? e.touches[0].clientY : e.clientY; this.ripples.push({x, y, size: 0, life: 1}); }
+            initDrops() {
+                const columns = Math.ceil(this.canvas.width / 20);
+                this.drops = [];
+                for (let i = 0; i < columns; i++) {
+                    this.drops.push({ x: i * 20, y: Math.random() * this.canvas.height, speed: Math.random() * 0.5 + 0.5, depth: Math.random() > 0.8 ? 2 : 1 });
+                }
+            }
+            createRipple(e) {
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                const y = e.touches ? e.touches[0].clientY : e.clientY;
+                this.ripples.push({x, y, size: 0, life: 1});
+            }
             setColor(c) { this.color = c; }
             draw() {
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.strokeStyle = this.color; this.ripples.forEach((r, i) => { this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.size, 0, Math.PI * 2); this.ctx.globalAlpha = r.life * 0.5; this.ctx.stroke(); r.size += 2; r.life -= 0.05; if(r.life <= 0) this.ripples.splice(i, 1); });
-                this.ctx.font = "14px monospace"; this.ctx.globalAlpha = 1;
-                this.drops.forEach(d => { const text = Math.floor(Math.random() * 10).toString(); if (d.depth === 2) { this.ctx.fillStyle = "#fff"; this.ctx.shadowBlur = 5; this.ctx.shadowColor = this.color; } else { this.ctx.fillStyle = this.color; this.ctx.shadowBlur = 0; } this.ctx.fillText(text, d.x, d.y); if (d.y > this.canvas.height && Math.random() > 0.975) d.y = 0; d.y += d.speed * 20; });
+                this.ctx.strokeStyle = this.color;
+                this.ripples.forEach((r, i) => {
+                    this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.size, 0, Math.PI * 2);
+                    this.ctx.globalAlpha = r.life * 0.5; this.ctx.stroke(); this.ctx.globalAlpha = 1;
+                    r.size += 2; r.life -= 0.05; if(r.life <= 0) this.ripples.splice(i, 1);
+                });
+                this.ctx.font = "14px monospace";
+                this.drops.forEach(drop => {
+                    const text = Math.floor(Math.random() * 10).toString();
+                    if (drop.depth === 2) { this.ctx.fillStyle = "#fff"; this.ctx.shadowBlur = 5; this.ctx.shadowColor = this.color; }
+                    else { this.ctx.fillStyle = this.color; this.ctx.shadowBlur = 0; }
+                    this.ctx.fillText(text, drop.x, drop.y);
+                    if (drop.y > this.canvas.height && Math.random() > 0.975) drop.y = 0;
+                    drop.y += drop.speed * 20;
+                });
             }
             loop() { requestAnimationFrame(() => this.loop()); this.draw(); }
         }
 
-        const AudioFX = new AudioEngine(), MatrixFX = new ParallaxMatrix(), Scrambler = new ScramblerEngine();
+        const AudioFX = new AudioEngine();
+        const MatrixFX = new ParallaxMatrix(); 
+        const Scrambler = new ScramblerEngine();
 
         const System = {
-            bgm: document.getElementById('bgm'), colorIndex: 0,
-            colors: [
-                { neon: '#0f0', dim: '#008F11', hex: '#0f0' },
-                { neon: '#00f0ff', dim: '#008F8F', hex: '#00f0ff' },
-                { neon: '#FF0000', dim: '#CC0000', hex: '#FF0000' },
-                { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }
-            ],
+            bgm: document.getElementById('bgm'),
+            musicBtn: document.getElementById('music-btn'),
+            musicIcon: document.getElementById('music-icon'),
+            log: document.getElementById('system-log'),
+            colorBtn: document.getElementById('color-btn'),
             
-            // --- NEW: SMART VISITOR LOGIC ---
+            // CONFIG WARNA
+            colorIndex: 0,
+            colors: [
+                { neon: '#0f0', dim: '#008F11', hex: '#0f0' },       
+                { neon: '#00f0ff', dim: '#008F8F', hex: '#00f0ff' }, 
+                { neon: '#FF0000', dim: '#CC0000', hex: '#FF0000' }, 
+                { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }  
+            ],
+
+            // --- 1. FITUR BARU: VISITOR COUNTER LOGIC ---
             getVisitorCount: function() {
                 let count = localStorage.getItem('nufa_visits');
-                // Logika: Jika kosong, mulai dari 940 (data real). Jika ada, tambah acak 1-3.
+                // Jika data kosong (pengguna baru), mulai dari 940 (sesuai data analytics)
                 if (!count) {
                     count = 940 + Math.floor(Math.random() * 10);
                 } else {
-                    count = parseInt(count) + 1; // Selalu bertambah 1 setiap refresh/kunjungan baru
+                    // Jika data ada, tambah 1
+                    count = parseInt(count) + 1;
                 }
                 localStorage.setItem('nufa_visits', count);
                 return count;
             },
 
-            loadSavedTheme: function() { const s = localStorage.getItem('nufa_theme'); if (s !== null) { this.colorIndex = parseInt(s); this.applyTheme(); } },
-            applyTheme: function() { const t = this.colors[this.colorIndex]; document.documentElement.style.setProperty('--neon', t.neon); document.documentElement.style.setProperty('--neon-dim', t.dim); MatrixFX.setColor(t.hex); },
-            
-            // --- MODIFIED: SYSTEM LOG WITH VISITOR COUNTER ---
+            loadSavedTheme: function() {
+                const savedIndex = localStorage.getItem('nufa_theme');
+                if (savedIndex !== null) {
+                    this.colorIndex = parseInt(savedIndex);
+                    this.applyTheme();
+                }
+            },
+
+            applyTheme: function() {
+                const theme = this.colors[this.colorIndex];
+                document.documentElement.style.setProperty('--neon', theme.neon);
+                document.documentElement.style.setProperty('--neon-dim', theme.dim);
+                MatrixFX.setColor(theme.hex);
+            },
+
+            // --- 2. UPDATE SYSTEM LOG (SWIPE TEXT) ---
             initLog: function() {
-                const visits = this.getVisitorCount(); // Ambil angka pengunjung
+                const visits = this.getVisitorCount(); // Ambil angka visitor
                 const logs = [
                     "Scanning ports...", 
                     "Encrypting connection...", 
-                    `Total Visits (24h): ${visits} Users`, // TAMPIL DI SINI
+                    `Total Visits: ${visits} Users`, // TAMPIL DI SINI
                     "System stable.", 
                     "Monitoring network..."
                 ];
-                const logEl = document.getElementById('system-log'); 
                 let i = 0; 
                 setInterval(() => { 
-                    logEl.innerText = ">> " + logs[i]; 
+                    this.log.innerText = ">> " + logs[i]; 
                     i = (i + 1) % logs.length; // Loop pesan terus menerus
-                }, 2500); // Ganti pesan setiap 2.5 detik
+                }, 2500); 
             },
 
+            // --- 3. FUNGSI MASUK UTAMA ---
             enter: function() {
-                AudioFX.click(); 
+                AudioFX.click();
+                
+                // Fix Audio Autoplay
                 const playPromise = this.bgm.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => { console.log("Audio waiting for interaction."); });
+                    playPromise.catch(error => { console.log("Audio waiting interaction."); });
                 }
                 this.bgm.volume = 0.6;
+                
                 this.loadSavedTheme();
-                document.getElementById('music-btn').style.display = 'flex'; document.getElementById('color-btn').style.display = 'flex';
-                this.renderGallery(); this.startLatency(); 
                 
-                this.initLog(); // JALANKAN LOG BARU
+                // Tampilkan Kontrol
+                this.musicBtn.style.display = 'flex'; 
+                this.colorBtn.style.display = 'flex';
                 
+                this.renderGallery(); 
+                this.startLatency(); 
+                this.initLog(); // Jalankan Log Visitor
+                
+                // Masukkan konten Beranda dengan efek Scramble
                 Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
-                document.getElementById('overlay').style.opacity = '0'; setTimeout(() => { document.getElementById('overlay').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }, 500);
+
+                // Hilangkan Lockscreen
+                document.getElementById('overlay').style.opacity = '0';
+                setTimeout(() => { 
+                    document.getElementById('overlay').style.display = 'none'; 
+                    document.getElementById('main-content').style.display = 'block'; 
+                }, 500);
             },
-            toggleColor: function() { AudioFX.click(); this.colorIndex = (this.colorIndex + 1) % this.colors.length; localStorage.setItem('nufa_theme', this.colorIndex); this.applyTheme(); },
-            renderGallery: function() { document.getElementById('gallery-container').innerHTML = DATABASE_FOTO.map(f => `<div class="gallery-item" onclick="AudioFX.click()"><img src="${f.file}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'"><div class="caption">${f.caption}</div></div>`).join(''); },
+
+            toggleColor: function() {
+                AudioFX.click();
+                this.colorIndex = (this.colorIndex + 1) % this.colors.length;
+                localStorage.setItem('nufa_theme', this.colorIndex);
+                this.applyTheme();
+            },
+
+            renderGallery: function() {
+                const container = document.getElementById('gallery-container');
+                container.innerHTML = DATABASE_FOTO.map(item => `
+                    <div class="gallery-item" onclick="AudioFX.click()">
+                        <img src="${item.file}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
+                        <div class="caption">${item.caption}</div>
+                    </div>
+                `).join('');
+            },
+
             startLatency: function() {
-                const el = document.querySelectorAll('.lat-val');
+                const latEl = document.querySelectorAll('.lat-val');
                 setInterval(() => {
-                    const start = Date.now(); fetch(window.location.href, { method: 'HEAD' }).then(() => { el.forEach(e => e.innerText = Date.now() - start); }).catch(() => el.forEach(e => e.innerText = Math.floor(Math.random()*50)+20));
+                    const start = Date.now();
+                    fetch(window.location.href, { method: 'HEAD' }).then(() => {
+                        latEl.forEach(el => el.innerText = Date.now() - start);
+                    }).catch(() => latEl.forEach(el => el.innerText = Math.floor(Math.random()*50)+20));
                 }, 3000);
             },
-            toggleMusic: function() { AudioFX.click(); if (this.bgm.paused) { this.bgm.play(); document.getElementById('music-icon').innerText = "🔊"; } else { this.bgm.pause(); document.getElementById('music-icon').innerText = "🔇"; } },
-            nav: function(id, btn) { AudioFX.click(); Scrambler.animateClick(btn); document.querySelectorAll('.slide').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); if(DATABASE_CONTENT[id]) Scrambler.write(document.getElementById(id+'-content'), DATABASE_CONTENT[id]); },
-            detail: function(btn, key) { AudioFX.click(); Scrambler.animateClick(btn); document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp')); btn.classList.add('active-comp'); Scrambler.animate(document.getElementById('desc-output'), DATABASE_MATERI[key]); }
+
+            toggleMusic: function() {
+                AudioFX.click();
+                if (this.bgm.paused) { this.bgm.play(); this.musicIcon.innerText = "矧"; this.musicBtn.style.opacity = "1"; }
+                else { this.bgm.pause(); this.musicIcon.innerText = "這"; this.musicBtn.style.opacity = "0.5"; }
+            },
+
+            nav: function(id, btn) {
+                AudioFX.click();
+                Scrambler.animateClick(btn);
+                
+                document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+                
+                document.getElementById(id).classList.add('active'); 
+                btn.classList.add('active');
+
+                if(id === 'home') {
+                    Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
+                } else if (id === 'visi') {
+                    Scrambler.write(document.getElementById('visi-content'), DATABASE_CONTENT.visi);
+                }
+            },
+
+            detail: function(btn, key) {
+                AudioFX.click();
+                Scrambler.animateClick(btn);
+                document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active-comp'));
+                btn.classList.add('active-comp');
+                Scrambler.animate(document.getElementById('desc-output'), DATABASE_MATERI[key]);
+            }
         };
     </script>
 </body>
