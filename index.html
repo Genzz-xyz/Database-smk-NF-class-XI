@@ -276,7 +276,11 @@
         </div>
 
         <footer>
-            <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR : ARLING</a>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR : ARLING</a>
+                <a href="https://vm.tiktok.com/ZSHoaESGQ25J7-202tt/" target="_blank" class="author-link" onclick="AudioFX.click()">OFFICIAL TIKTOK</a>
+            </div>
+            
             <div id="system-log" style="margin-top: 18px; font-size: 0.7rem;">Initializing...</div>
             <div style="margin-top: 5px;">&copy; 2026 SMK NURUL FALAH</div>
         </footer>
@@ -442,7 +446,7 @@
             }
             setColor(c) { this.color = c; }
             draw() {
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.15)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.35)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.strokeStyle = this.color;
                 this.ripples.forEach((r, i) => {
                     this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.size, 0, Math.PI * 2);
@@ -485,7 +489,7 @@
             ],
 
             // --- CONFIG COUNTER GLOBAL ---
-            baseOffset: 4021, // Angka manipulasi awal
+            baseOffset: 4987, // Angka manipulasi awal
             currentVisits: 0, 
 
             // --- FUNGSI GLOBAL VISITOR SYNC ---
@@ -544,7 +548,7 @@
             // --- SYSTEM LOG DENGAN ANGKA
             initLog: function() {
                 const logs = [
-                    "Scanning ports...", 
+                    "Scanning connection...", 
                     "Encrypting connection...", 
                     `Global Access: ${this.currentVisits} Users`, // TAMPILKAN HASIL AKHIR
                     "System stable.", 
