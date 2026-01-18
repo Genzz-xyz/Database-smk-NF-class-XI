@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SMK NURUL FALAH - THE GLIMPSE OF FUTURE</title>
     
-   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3C!-- Background Bumi Hitam --%3E%3Ccircle cx="50" cy="50" r="45" fill="black" stroke="white" stroke-width="4"/%3E%3C!-- Garis Khatulistiwa --%3E%3Cline x1="5" y1="50" x2="95" y2="50" stroke="white" stroke-width="2"/%3E%3C!-- Garis Bujur Tengah (Diam) --%3Cline x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="2"/%3E%3C!-- Animasi Rotasi (Garis Melengkung) --%3E%3Cellipse cx="50" cy="50" rx="10" ry="45" fill="none" stroke="white" stroke-width="3"%3E%3Canimate attributeName="rx" values="0;44;0" dur="2s" repeatCount="indefinite"/%3E%3C/ellipse%3E%3C/svg%3E'>
+   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="black" stroke="white" stroke-width="4"/%3E%3Cline x1="5" y1="50" x2="95" y2="50" stroke="white" stroke-width="2"/%3E%3Cline x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="2"/%3E%3Cellipse cx="50" cy="50" rx="10" ry="45" fill="none" stroke="white" stroke-width="3"%3E%3Canimate attributeName="rx" values="0;44;0" dur="2s" repeatCount="indefinite"/%3E%3C/ellipse%3E%3C/svg%3E'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -23,6 +23,12 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
+
+        /* SCROLLBAR CUSTOM (HITAM & NEON) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
 
         body {
             margin: 0; padding: 0;
@@ -141,10 +147,9 @@
             transition: border-color 0.5s;
         }
         
-        /* [FIX] LATENCY VISIBILITY: Gunakan warna utama neon dengan transparansi */
         .slide-hud {
             position: absolute; top: 5px; right: 10px;
-            font-size: 0.6rem; color: var(--neon); opacity: 0.8; /* LEBIH TERANG */
+            font-size: 0.6rem; color: var(--neon); opacity: 0.8;
             letter-spacing: 2px; transition: color 0.5s;
         }
 
@@ -162,7 +167,7 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
         .gallery-item {
             border: 1px solid var(--neon-dim); position: relative; height: 180px; overflow: hidden;
-            transition: 0.3s; background: #000;
+            transition: 0.3s; background: #000; cursor: pointer;
         }
         .gallery-item:hover { border-color: var(--neon); transform: scale(1.02); z-index: 2; box-shadow: 0 0 20px var(--neon-dim); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; filter: grayscale(80%); }
@@ -196,7 +201,6 @@
         }
         .author-link:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
         
-        /* [FIX] SYSTEM LOG: Lebih terang dengan transparansi */
         #system-log { color: var(--neon) !important; opacity: 0.7; }
 
         /* --- 11. CONTROLS --- */
@@ -277,8 +281,8 @@
 
         <footer>
             <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
-                <a href="https://wa.me/6283199753711" target="_blank" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR : ARLING</a>
-                <a href="https://vm.tiktok.com/ZSHoaESGQ25J7-202tt/" target="_blank" class="author-link" onclick="AudioFX.click()">OFFICIAL TIKTOK</a>
+                <a href="https://wa.me/6283199753711" target="_blank" rel="noopener noreferrer" class="author-link" onclick="AudioFX.click()">CONTACT AUTHOR : ARLING</a>
+                <a href="https://vm.tiktok.com/ZSHoaESGQ25J7-202tt/" target="_blank" rel="noopener noreferrer" class="author-link" onclick="AudioFX.click()">TIKTOK SMK OFFICIAL</a>
             </div>
             
             <div id="system-log" style="margin-top: 18px; font-size: 0.7rem;">Initializing...</div>
@@ -287,9 +291,6 @@
     </div>
 
     <script>
-        // --- 1. DATABASES LENGKAP (GOLD STANDARD - TIDAK DIPERSINGKAT) ---
-        // Referensi: compile.html & index.html (Data Asli)
-        
         const DATABASE_FOTO = [
             { file: 'foto1.jpg', caption: 'KEGIATAN SEKOLAH' },
             { file: 'foto2.jpg', caption: 'PENERIMAAN RAPORT' },
@@ -333,8 +334,6 @@
             'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
         };
 
-        // --- 2. ENGINE CORE (STABILITAS TINGGI - WORKSHOP.HTML) ---
-
         class AudioEngine {
             constructor() { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
             resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
@@ -355,7 +354,6 @@
         class ScramblerEngine {
             constructor() { this.chars = '!<>-_\\/[]{}—=+*^?#________'; }
             
-            // Animasi Tombol Navigasi
             animateClick(el) {
                 const originalText = el.getAttribute('data-original') || el.innerText;
                 if(!el.getAttribute('data-original')) el.setAttribute('data-original', originalText);
@@ -372,16 +370,12 @@
                 }, 40);
             }
 
-            // Animasi HTML Content (Beranda & Visi Misi)
             write(el, htmlContent) {
                 el.innerHTML = htmlContent;
                 const textNodes = [];
                 function findTextNodes(node) {
-                    if (node.nodeType === 3) {
-                        if(node.textContent.trim().length > 0) textNodes.push(node);
-                    } else {
-                        for (let child of node.childNodes) findTextNodes(child);
-                    }
+                    if (node.nodeType === 3 && node.textContent.trim().length > 0) textNodes.push(node);
+                    else if (node.nodeType === 1) for (let child of node.childNodes) findTextNodes(child);
                 }
                 findTextNodes(el);
                 textNodes.forEach(node => {
@@ -391,8 +385,8 @@
                     const interval = setInterval(() => {
                         let output = '';
                         for(let i=0; i<length; i++) {
-                            if(frame >= i) { output += originalText[i]; } 
-                            else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; }
+                            if(frame >= i) output += originalText[i];
+                            else output += this.chars[Math.floor(Math.random() * this.chars.length)];
                         }
                         node.textContent = output.substring(0, frame + 1);
                         if(frame >= length) {
@@ -404,14 +398,13 @@
                 });
             }
 
-            // Animasi Simple Text (Materi)
             animate(el, newText) {
                 const length = newText.length; let frame = 0;
                 const interval = setInterval(() => {
                     let output = '';
                     for(let i=0; i<length; i++) {
-                        if(frame >= i) { output += newText[i]; } 
-                        else { output += this.chars[Math.floor(Math.random() * this.chars.length)]; }
+                        if(frame >= i) output += newText[i];
+                        else output += this.chars[Math.floor(Math.random() * this.chars.length)];
                     }
                     el.innerHTML = output.substring(0, frame + 1) + (frame < length ? '_' : '');
                     if(frame >= length) clearInterval(interval);
@@ -446,7 +439,9 @@
             }
             setColor(c) { this.color = c; }
             draw() {
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.35)"; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                // warna
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.15)"; 
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.strokeStyle = this.color;
                 this.ripples.forEach((r, i) => {
                     this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.size, 0, Math.PI * 2);
@@ -470,16 +465,12 @@
         const MatrixFX = new ParallaxMatrix(); 
         const Scrambler = new ScramblerEngine();
 
-        // --- 3. SYSTEM LOGIC (GLOBAL VISITOR SYNC) ---
-        
-                const System = {
+        const System = {
             bgm: document.getElementById('bgm'),
             musicBtn: document.getElementById('music-btn'),
             musicIcon: document.getElementById('music-icon'),
             log: document.getElementById('system-log'),
             colorBtn: document.getElementById('color-btn'),
-            
-            // Konfigurasi Warna
             colorIndex: 0,
             colors: [
                 { neon: '#0f0', dim: '#008F11', hex: '#0f0' },       
@@ -487,46 +478,32 @@
                 { neon: '#FF0000', dim: '#CC0000', hex: '#FF0000' }, 
                 { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }  
             ],
-
-            // --- CONFIG COUNTER GLOBAL ---
-            baseOffset: 4987, // Angka manipulasi awal
+            baseOffset: 4987,
             currentVisits: 0, 
 
-            // --- FUNGSI GLOBAL VISITOR SYNC ---
             syncVisitorCount: function() {
                 return new Promise(resolve => {
-                    // Timeout 1.5 detik (Agar UX tidak macet jika sinyal jelek)
-                    const timeout = setTimeout(() => {
-                        this.useLocalFallback();
-                        resolve();
-                    }, 1500);
-
-                    // Fetch ke API Publik (CountAPI)
-                    // Namespace: smknufabdp2026
-                    fetch('https://api.countapi.xyz/hit/smknufabdp2026/visits')
+                    const timeout = new Promise(r => setTimeout(r, 800)); 
+                    const fetchAPI = fetch('https://api.countapi.xyz/hit/smknufabdp2026/visits')
                         .then(res => res.json())
                         .then(data => {
-                            clearTimeout(timeout);
-                            // RUMUS: Angka Real Server + 4900
                             this.currentVisits = data.value + this.baseOffset;
-                            resolve();
+                            return true;
                         })
-                        .catch(() => {
-                            clearTimeout(timeout);
-                            this.useLocalFallback();
-                            resolve();
-                        });
+                        .catch(() => false);
+
+                    Promise.race([fetchAPI, timeout]).then((result) => {
+                        if (result !== true) this.useLocalFallback();
+                        resolve();
+                    });
                 });
             },
 
-            // Fungsi Fallback (Jika Server Down/Offline)
             useLocalFallback: function() {
                 let localCount = localStorage.getItem('nufa_visits');
                 if(!localCount) localCount = 1;
                 else localCount = parseInt(localCount) + 1;
-                
                 localStorage.setItem('nufa_visits', localCount);
-                // Tetap tambah 4900 walau offline
                 this.currentVisits = localCount + this.baseOffset;
             },
 
@@ -545,12 +522,11 @@
                 MatrixFX.setColor(theme.hex);
             },
 
-            // --- SYSTEM LOG DENGAN ANGKA
             initLog: function() {
                 const logs = [
                     "Scanning connection...", 
                     "Encrypting connection...", 
-                    `Global Access: ${this.currentVisits} Users`, // TAMPILKAN HASIL AKHIR
+                    `Global Access: ${this.currentVisits} Users`, 
                     "System stable.", 
                     "Monitoring network..."
                 ];
@@ -561,30 +537,23 @@
                 }, 2500); 
             },
 
-            // --- MAIN ENTRY POINT (DENGAN EFEK LOADING) ---
             enter: async function() {
                 AudioFX.click();
-                
-                // 1. Audio
                 const playPromise = this.bgm.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => { console.log("Audio waiting interaction."); });
+                    playPromise.catch(error => { console.log("Audio autoplay prevented or missing."); });
                 }
                 this.bgm.volume = 0.8;
                 
-                // 2. Efek Loading Tombol (UX)
                 const btnEnter = document.querySelector('.btn-enter');
                 const oldText = btnEnter.innerText;
-                btnEnter.innerText = "CONNECTING..."; // Feedback ke user
+                btnEnter.innerText = "CONNECTING..."; 
 
-                // 3. Tunggu Sync Server
                 await this.syncVisitorCount();
                 
-                btnEnter.innerText = oldText; // Balikkan teks
-
+                btnEnter.innerText = oldText; 
                 this.loadSavedTheme();
                 
-                // 4. Buka UI
                 this.musicBtn.style.display = 'flex'; 
                 this.colorBtn.style.display = 'flex';
                 
@@ -592,10 +561,8 @@
                 this.startLatency(); 
                 this.initLog(); 
                 
-                // Animasi Masuk
                 Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
 
-                // Buka Lockscreen
                 document.getElementById('overlay').style.opacity = '0';
                 setTimeout(() => { 
                     document.getElementById('overlay').style.display = 'none'; 
@@ -614,7 +581,7 @@
                 const container = document.getElementById('gallery-container');
                 container.innerHTML = DATABASE_FOTO.map(item => `
                     <div class="gallery-item" onclick="AudioFX.click()">
-                        <img src="${item.file}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+ERROR'">
+                        <img src="${item.file}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/001100/00FF41?text=IMG+MISSING'">
                         <div class="caption">${item.caption}</div>
                     </div>
                 `).join('');
@@ -623,10 +590,17 @@
             startLatency: function() {
                 const latEl = document.querySelectorAll('.lat-val');
                 setInterval(() => {
-                    const start = Date.now();
-                    fetch(window.location.href, { method: 'HEAD' }).then(() => {
-                        latEl.forEach(el => el.innerText = Date.now() - start);
-                    }).catch(() => latEl.forEach(el => el.innerText = Math.floor(Math.random()*50)+20));
+                    const start = performance.now();
+                    // REAL PING DENGAN CACHE BUSTING (Agar tidak 0ms)
+                    fetch(window.location.href + '?t=' + Math.random(), { method: 'HEAD', cache: 'no-store' })
+                        .then(() => {
+                            const end = performance.now();
+                            latEl.forEach(el => el.innerText = Math.round(end - start));
+                        })
+                        .catch(() => {
+                            // Jika Offline atau Error, Tampilkan 'OFF'
+                            latEl.forEach(el => el.innerText = "OFF");
+                        });
                 }, 3000);
             },
 
