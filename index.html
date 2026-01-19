@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SMK NURUL FALAH - THE GLIMPSE OF FUTURE</title>
     
-   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="black" stroke="white" stroke-width="4"/%3E%3Cline x1="5" y1="50" x2="95" y2="50" stroke="white" stroke-width="2"/%3E%3Cline x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="2"/%3E%3Cellipse cx="50" cy="50" rx="10" ry="45" fill="none" stroke="white" stroke-width="3"%3E%3Canimate attributeName="rx" values="0;44;0" dur="2s" repeatCount="indefinite"/%3E%3C/ellipse%3E%3C/svg%3E'>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f0">
+
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="black" stroke="white" stroke-width="4"/%3E%3Cline x1="5" y1="50" x2="95" y2="50" stroke="white" stroke-width="2"/%3E%3Cline x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="2"/%3E%3Cellipse cx="50" cy="50" rx="10" ry="45" fill="none" stroke="white" stroke-width="3"%3E%3Canimate attributeName="rx" values="0;44;0" dur="2s" repeatCount="indefinite"/%3E%3C/ellipse%3E%3C/svg%3E'>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -24,12 +28,12 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
 
-        /* SCROLLBAR CUSTOM (HITAM & NEON) */
+        /* SCROLLBAR CUSTOM */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
-
+      
         body {
             margin: 0; padding: 0;
             background-color: var(--bg-color);
@@ -41,11 +45,11 @@
             transition: color 0.5s ease;
         }
 
-        /* --- 2. BACKGROUND (CRYSTAL CLEAR) --- */
+        /* --- 2. BACKGROUND --- */
         canvas#matrix-bg { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.85; }
         .scanlines { display: none; } 
 
-        /* --- 3. GLITCH HEADER (AGRESIF) --- */
+        /* --- 3. GLITCH HEADER --- */
         .glitch-wrapper { position: relative; display: inline-block; }
         .glitch {
             position: relative; color: var(--neon); font-size: 2rem; 
@@ -67,18 +71,10 @@
 
         @keyframes glitch-anim {
             0% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); }
-            20% { clip: rect(80px, 9999px, 100px, 0); transform: skew(0.3deg); }
-            40% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.8deg); }
-            60% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.2deg); }
-            80% { clip: rect(20px, 9999px, 90px, 0); transform: skew(0.6deg); }
             100% { clip: rect(90px, 9999px, 10px, 0); transform: skew(0.4deg); }
         }
         @keyframes glitch-anim-2 {
             0% { clip: rect(60px, 9999px, 10px, 0); transform: skew(0.8deg); }
-            20% { clip: rect(20px, 9999px, 40px, 0); transform: skew(0.2deg); }
-            40% { clip: rect(90px, 9999px, 30px, 0); transform: skew(0.6deg); }
-            60% { clip: rect(10px, 9999px, 80px, 0); transform: skew(0.4deg); }
-            80% { clip: rect(50px, 9999px, 20px, 0); transform: skew(0.1deg); }
             100% { clip: rect(30px, 9999px, 70px, 0); transform: skew(0.7deg); }
         }
 
@@ -146,13 +142,11 @@
             box-shadow: 0 0 10px rgba(0, 255, 65, 0.05); line-height: 1.6; position: relative;
             transition: border-color 0.5s;
         }
-        
         .slide-hud {
             position: absolute; top: 5px; right: 10px;
             font-size: 0.6rem; color: var(--neon); opacity: 0.8;
             letter-spacing: 2px; transition: color 0.5s;
         }
-
         .slide.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -214,6 +208,19 @@
         #music-btn { right: 20px; }
         #color-btn { left: 20px; }
 
+        /* --- 12. PWA INSTALL PROMPT (ADDED) --- */
+        #pwa-prompt {
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+            background: var(--glass); border: 1px solid var(--neon);
+            padding: 15px; z-index: 2000; display: none; width: 90%; max-width: 400px;
+            box-shadow: 0 0 20px var(--neon-dim); animation: glitch-anim 0.3s infinite alternate;
+        }
+        .prompt-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .btn-prompt {
+            background: transparent; border: 1px solid var(--neon); color: var(--neon);
+            padding: 5px 15px; cursor: pointer; font-family: var(--font-main); font-size: 0.8rem;
+        }
+        .btn-prompt:hover { background: var(--neon); color: #000; }
     </style>
 </head>
 <body>
@@ -223,17 +230,17 @@
     <div class="scanlines"></div>
 
     <div id="overlay">
-        <div class="lock-icon">🔒</div>
+        <div class="lock-icon">白</div>
         <h2 style="margin: 0; color: white; letter-spacing: 4px; font-weight: 400;">ENCRYPTED CONNECTION</h2>
         <p style="margin-top: 5px; color: var(--neon);">SMK NURUL FALAH - SECURE PORTAL</p>
         <button class="btn-enter" onclick="System.enter()">BUKA AKSES DATA</button>
     </div>
 
     <div id="music-btn" class="control-btn" onclick="System.toggleMusic()">
-        <span id="music-icon">🔊</span>
+        <span id="music-icon">矧</span>
     </div>
     <div id="color-btn" class="control-btn" onclick="System.toggleColor()">
-        <span id="color-icon">🎨</span>
+        <span id="color-icon">耳</span>
     </div>
 
     <div class="container" id="main-content">
@@ -290,6 +297,14 @@
         </footer>
     </div>
 
+    <div id="pwa-prompt">
+        <span class="prompt-title">>> SYSTEM: PORTAL OFFLINE ACCESS DETECTED. INSTALL?</span>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn-prompt" onclick="PWA.dismiss()">IGNORE</button>
+            <button class="btn-prompt" onclick="PWA.install()">ACCEPT</button>
+        </div>
+    </div>
+
     <script>
         const DATABASE_FOTO = [
             { file: 'foto1.jpg', caption: 'KEGIATAN SEKOLAH' },
@@ -334,6 +349,7 @@
             'kwu': 'Implementasi mata pelajaran Produk Kreatif dan Kewirausahaan (PKK) dimana siswa dibimbing untuk merancang, memproduksi, dan memasarkan produk inovatif serta menyusun rencana bisnis (Business Plan) yang layak jual.'
         };
 
+        // --- CORE PROCESSORS (DO NOT TOUCH) ---
         class AudioEngine {
             constructor() { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
             resume() { if (this.ctx.state === 'suspended') this.ctx.resume(); }
@@ -352,8 +368,7 @@
         }
 
         class ScramblerEngine {
-            constructor() { this.chars = '!<>-_\\/[]{}—=+*^?#________'; }
-            
+            constructor() { this.chars = '!<>-_\\/[]{}窶+*^?#________'; }
             animateClick(el) {
                 const originalText = el.getAttribute('data-original') || el.innerText;
                 if(!el.getAttribute('data-original')) el.setAttribute('data-original', originalText);
@@ -369,7 +384,6 @@
                     frame++;
                 }, 40);
             }
-
             write(el, htmlContent) {
                 el.innerHTML = htmlContent;
                 const textNodes = [];
@@ -397,7 +411,6 @@
                     }, 20);
                 });
             }
-
             animate(el, newText) {
                 const length = newText.length; let frame = 0;
                 const interval = setInterval(() => {
@@ -439,7 +452,6 @@
             }
             setColor(c) { this.color = c; }
             draw() {
-                // warna
                 this.ctx.fillStyle = "rgba(0, 0, 0, 0.15)"; 
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.strokeStyle = this.color;
@@ -465,6 +477,46 @@
         const MatrixFX = new ParallaxMatrix(); 
         const Scrambler = new ScramblerEngine();
 
+        // --- PWA LOGIC (MOVED HERE FOR SAFETY) ---
+        let deferredPrompt;
+        const PWA = {
+            init: function() {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    setTimeout(() => {
+                        const promptEl = document.getElementById('pwa-prompt');
+                        if(promptEl) promptEl.style.display = 'block';
+                    }, 3000);
+                });
+                // Service Worker Registration
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', () => {
+                        navigator.serviceWorker.register('sw.js').then(
+                            () => console.log('>> SYSTEM: SERVICE WORKER ACTIVE'),
+                            (err) => console.log('>> SYSTEM: SERVICE WORKER FAILED')
+                        );
+                    });
+                }
+            },
+            install: async function() {
+                if(AudioFX) AudioFX.click();
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') console.log('>> SYSTEM: INSTALL ACCEPTED');
+                    this.dismiss();
+                }
+            },
+            dismiss: function() {
+                if(AudioFX) AudioFX.click();
+                document.getElementById('pwa-prompt').style.display = 'none';
+                deferredPrompt = null;
+            }
+        };
+        // Activate PWA Logic
+        PWA.init();
+
         const System = {
             bgm: document.getElementById('bgm'),
             musicBtn: document.getElementById('music-btn'),
@@ -478,32 +530,28 @@
                 { neon: '#FF0000', dim: '#CC0000', hex: '#FF0000' }, 
                 { neon: '#ffff00', dim: '#808000', hex: '#ffff00' }  
             ],
-            baseOffset: 4000,
+            baseOffset: 4912,
             currentVisits: 0, 
 
-            syncVisitorCount: function() {
-                return new Promise(resolve => {
-                    const timeout = new Promise(r => setTimeout(r, 800)); 
-                    const fetchAPI = fetch('https://api.countapi.xyz/hit/smknufabdp2026/visits')
-                        .then(res => res.json())
-                        .then(data => {
-                            this.currentVisits = data.value + this.baseOffset;
-                            return true;
-                        })
-                        .catch(() => false);
-
-                    Promise.race([fetchAPI, timeout]).then((result) => {
-                        if (result !== true) this.useLocalFallback();
-                        resolve();
-                    });
-                });
+            syncVisitorCount: async function() {
+                try {
+                    const response = await fetch('https://api.counterapi.dev/v1/smknufa_2026/visits/up');
+                    const data = await response.json();
+                    if (data && data.count) {
+                        this.currentVisits = parseInt(data.count) + this.baseOffset;
+                        return true;
+                    }
+                } catch (error) {
+                    this.useLocalFallback();
+                    return false;
+                }
             },
 
             useLocalFallback: function() {
-                let localCount = localStorage.getItem('nufa_visits');
+                let localCount = localStorage.getItem('nufa_visits_backup');
                 if(!localCount) localCount = 1;
                 else localCount = parseInt(localCount) + 1;
-                localStorage.setItem('nufa_visits', localCount);
+                localStorage.setItem('nufa_visits_backup', localCount);
                 this.currentVisits = localCount + this.baseOffset;
             },
 
@@ -523,44 +571,48 @@
             },
 
             initLog: function() {
-                const logs = [
-                    "Scanning connection...", 
-                    "Encrypting connection...", 
-                    `Global Access: ${this.currentVisits} Users`, 
-                    "System stable.", 
-                    "Monitoring network..."
-                ];
-                let i = 0; 
-                setInterval(() => { 
-                    this.log.innerText = ">> " + logs[i]; 
-                    i = (i + 1) % logs.length; 
-                }, 2500); 
+                const updateLog = () => {
+                    const logs = [
+                        "Scanning connection...", 
+                        "Encrypting connection...", 
+                        `Global Access: ${this.currentVisits} Users`, 
+                        "System stable.", 
+                        "Monitoring network..."
+                    ];
+                    let i = 0; 
+                    setInterval(() => { 
+                        this.log.innerText = ">> " + logs[i]; 
+                        i = (i + 1) % logs.length; 
+                    }, 2500); 
+                };
+                updateLog();
             },
 
             enter: async function() {
                 AudioFX.click();
                 const playPromise = this.bgm.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => { console.log("Audio autoplay prevented or missing."); });
+                    playPromise.catch(error => { console.log("Audio autoplay prevented."); });
                 }
                 this.bgm.volume = 0.8;
-                
+
                 const btnEnter = document.querySelector('.btn-enter');
                 const oldText = btnEnter.innerText;
-                btnEnter.innerText = "CONNECTING..."; 
+                
+                btnEnter.innerText = "LOADING..."; 
 
                 await this.syncVisitorCount();
-                
+
                 btnEnter.innerText = oldText; 
                 this.loadSavedTheme();
-                
+
                 this.musicBtn.style.display = 'flex'; 
                 this.colorBtn.style.display = 'flex';
-                
+
                 this.renderGallery(); 
                 this.startLatency(); 
                 this.initLog(); 
-                
+
                 Scrambler.write(document.getElementById('home-content'), DATABASE_CONTENT.home);
 
                 document.getElementById('overlay').style.opacity = '0';
@@ -591,14 +643,12 @@
                 const latEl = document.querySelectorAll('.lat-val');
                 setInterval(() => {
                     const start = performance.now();
-                    // REAL PING DENGAN CACHE BUSTING (Agar tidak 0ms)
                     fetch(window.location.href + '?t=' + Math.random(), { method: 'HEAD', cache: 'no-store' })
                         .then(() => {
                             const end = performance.now();
                             latEl.forEach(el => el.innerText = Math.round(end - start));
                         })
                         .catch(() => {
-                            // Jika Offline atau Error, Tampilkan 'OFF'
                             latEl.forEach(el => el.innerText = "OFF  ");
                         });
                 }, 3000);
@@ -606,17 +656,17 @@
 
             toggleMusic: function() {
                 AudioFX.click();
-                if (this.bgm.paused) { this.bgm.play(); this.musicIcon.innerText = "🔊"; this.musicBtn.style.opacity = "1"; }
-                else { this.bgm.pause(); this.musicIcon.innerText = "🔇"; this.musicBtn.style.opacity = "0.5"; }
+                if (this.bgm.paused) { this.bgm.play(); this.musicIcon.innerText = "矧"; this.musicBtn.style.opacity = "1"; }
+                else { this.bgm.pause(); this.musicIcon.innerText = "這"; this.musicBtn.style.opacity = "0.5"; }
             },
 
             nav: function(id, btn) {
                 AudioFX.click();
                 Scrambler.animateClick(btn);
-                
+
                 document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-                
+
                 document.getElementById(id).classList.add('active'); 
                 btn.classList.add('active');
 
